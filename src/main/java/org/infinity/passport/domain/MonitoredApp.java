@@ -22,6 +22,7 @@ public class MonitoredApp extends AbstractAuditableDomain implements Serializabl
 
     private ResponsiblePerson responsiblePerson;
 
+    private HealthState healthState;
 
     public MonitoredApp() {
     }
@@ -40,7 +41,7 @@ public class MonitoredApp extends AbstractAuditableDomain implements Serializabl
         this.appName = appName;
     }
 
-    public List getNodes() {
+    public List<Node> getNodes() {
         return nodes;
     }
 
@@ -56,6 +57,14 @@ public class MonitoredApp extends AbstractAuditableDomain implements Serializabl
         this.responsiblePerson = responsiblePerson;
     }
 
+    public HealthState getHealthState() {
+        return healthState;
+    }
+
+    public void setHealthState(HealthState healthState) {
+        this.healthState = healthState;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,12 +72,14 @@ public class MonitoredApp extends AbstractAuditableDomain implements Serializabl
         MonitoredApp that = (MonitoredApp) o;
         return Objects.equals(appName, that.appName) &&
                 Objects.equals(nodes, that.nodes) &&
-                Objects.equals(responsiblePerson, that.responsiblePerson);
+                Objects.equals(responsiblePerson, that.responsiblePerson) &&
+                Objects.equals(healthState, that.healthState);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(appName, nodes, responsiblePerson);
+
+        return Objects.hash(appName, nodes, responsiblePerson, healthState);
     }
 
     @Override
@@ -77,6 +88,7 @@ public class MonitoredApp extends AbstractAuditableDomain implements Serializabl
                 "appName='" + appName + '\'' +
                 ", nodes=" + nodes +
                 ", responsiblePerson=" + responsiblePerson +
+                ", healthState=" + healthState +
                 '}';
     }
 }

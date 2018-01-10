@@ -1,6 +1,7 @@
 package org.infinity.passport.controller;
 
 import org.infinity.passport.domain.MonitoredApp;
+import org.infinity.passport.service.MonitoredAppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,15 +12,15 @@ import java.util.List;
 @RestController
 public class MonitoredAppController {
 
-    private final MongoTemplate mongoTemplate;
+    private final MonitoredAppService monitoredAppService;
 
     @Autowired
-    public MonitoredAppController(MongoTemplate mongoTemplate) {
-        this.mongoTemplate = mongoTemplate;
+    public MonitoredAppController(MonitoredAppService monitoredAppService) {
+        this.monitoredAppService = monitoredAppService;
     }
 
     @GetMapping("api/monitoredApps")
     public List<MonitoredApp> getMonitoredApps() {
-        return mongoTemplate.findAll(MonitoredApp.class);
+        return monitoredAppService.findAll();
     }
 }

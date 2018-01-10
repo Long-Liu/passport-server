@@ -17,6 +17,8 @@ public class Node extends AbstractAuditableDomain implements Serializable {
 
     private String healthContextPath;
 
+    private HealthState healthState;
+
     public Node() {
     }
 
@@ -50,6 +52,14 @@ public class Node extends AbstractAuditableDomain implements Serializable {
         this.healthContextPath = healthContextPath;
     }
 
+    public HealthState getHealthState() {
+        return healthState;
+    }
+
+    public void setHealthState(HealthState healthState) {
+        this.healthState = healthState;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,13 +67,14 @@ public class Node extends AbstractAuditableDomain implements Serializable {
         Node node = (Node) o;
         return port == node.port &&
                 Objects.equals(serverAddress, node.serverAddress) &&
-                Objects.equals(healthContextPath, node.healthContextPath);
+                Objects.equals(healthContextPath, node.healthContextPath) &&
+                Objects.equals(healthState, node.healthState);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(serverAddress, port, healthContextPath);
+        return Objects.hash(serverAddress, port, healthContextPath, healthState);
     }
 
     @Override
@@ -72,6 +83,7 @@ public class Node extends AbstractAuditableDomain implements Serializable {
                 "serverAddress='" + serverAddress + '\'' +
                 ", port=" + port +
                 ", healthContextPath='" + healthContextPath + '\'' +
+                ", healthState=" + healthState +
                 '}';
     }
 }

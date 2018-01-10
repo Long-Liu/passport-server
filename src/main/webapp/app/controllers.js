@@ -60,39 +60,39 @@ function MainController($http, $scope, $state, AuthenticationService, PrincipalS
     var main = this;
     main.account = null;
     main.isAuthenticated = null;
-    main.links =  [];
+    main.links = [];
     main.selectedLink = null;
     main.selectLink = selectLink;
-    
+
     // Authenticate user whether has logged in
     AuthenticationService.authorize(false, getAccount);
-    
-    $scope.$on('authenticationSuccess', function() {
+
+    $scope.$on('authenticationSuccess', function () {
         getAccount();
     });
-    
-    $scope.$watch(PrincipalService.isAuthenticated, function() {
+
+    $scope.$watch(PrincipalService.isAuthenticated, function () {
         loadLinks();
     });
-    
+
     function loadLinks() {
-        if(PrincipalService.isAuthenticated() == true) {
-            main.links =  AuthorityAdminMenuService.queryLinks({ appName: APP_NAME });
+        if (PrincipalService.isAuthenticated() == true) {
+            main.links = AuthorityAdminMenuService.queryLinks({appName: APP_NAME});
         }
     }
-    
-    function getAccount () {
-        PrincipalService.identity().then(function(account) {
+
+    function getAccount() {
+        PrincipalService.identity().then(function (account) {
             main.account = account;
             main.isAuthenticated = PrincipalService.isAuthenticated;
-             
-            if(account) {
+
+            if (account) {
                 AlertUtils.success('登录成功');
             }
         });
     }
-    
-    function selectLink ($item, $model, $label, $event) {
+
+    function selectLink($item, $model, $label, $event) {
         $state.go(main.selectedLink.link);
     }
 };
@@ -102,25 +102,25 @@ function MainController($http, $scope, $state, AuthenticationService, PrincipalS
  */
 function ApiResponseTimeController() {
     var vm = this;
-    
+
     /**
      * Options for Line chart
      */
     vm.lineOptions = {
-        scaleShowGridLines : true,
-        scaleGridLineColor : "rgba(0,0,0,.05)",
-        scaleGridLineWidth : 1,
-        bezierCurve : true,
-        bezierCurveTension : 0.4,
-        pointDot : true,
-        pointDotRadius : 4,
-        pointDotStrokeWidth : 1,
-        pointHitDetectionRadius : 20,
-        datasetStroke : true,
-        datasetStrokeWidth : 2,
-        datasetFill : true
+        scaleShowGridLines: true,
+        scaleGridLineColor: "rgba(0,0,0,.05)",
+        scaleGridLineWidth: 1,
+        bezierCurve: true,
+        bezierCurveTension: 0.4,
+        pointDot: true,
+        pointDotRadius: 4,
+        pointDotStrokeWidth: 1,
+        pointHitDetectionRadius: 20,
+        datasetStroke: true,
+        datasetStrokeWidth: 2,
+        datasetFill: true
     };
-    
+
     /**
      * Data for Line chart
      */
@@ -143,25 +143,25 @@ function ApiResponseTimeController() {
 
 function ApiAccessController() {
     var vm = this;
-    
+
     /**
      * Options for Line chart
      */
     vm.lineOptions = {
-        scaleShowGridLines : true,
-        scaleGridLineColor : "rgba(0,0,0,.05)",
-        scaleGridLineWidth : 1,
-        bezierCurve : true,
-        bezierCurveTension : 0.4,
-        pointDot : true,
-        pointDotRadius : 4,
-        pointDotStrokeWidth : 1,
-        pointHitDetectionRadius : 20,
-        datasetStroke : true,
-        datasetStrokeWidth : 2,
-        datasetFill : true
+        scaleShowGridLines: true,
+        scaleGridLineColor: "rgba(0,0,0,.05)",
+        scaleGridLineWidth: 1,
+        bezierCurve: true,
+        bezierCurveTension: 0.4,
+        pointDot: true,
+        pointDotRadius: 4,
+        pointDotStrokeWidth: 1,
+        pointHitDetectionRadius: 20,
+        datasetStroke: true,
+        datasetStrokeWidth: 2,
+        datasetFill: true
     };
-    
+
     /**
      * Data for Line chart
      */
@@ -187,37 +187,37 @@ function ApiAccessController() {
  */
 function LeftSidebarController($scope, $state, $element, $timeout, APP_NAME, AuthorityAdminMenuService, PrincipalService) {
     var vm = this;
-    
+
     vm.init = init;
     vm.groups = [];
-    
-    $scope.$watch(PrincipalService.isAuthenticated, function() {
+
+    $scope.$watch(PrincipalService.isAuthenticated, function () {
         vm.init();
     });
-    
+
     function init() {
-        if(PrincipalService.isAuthenticated() == true) {
-            AuthorityAdminMenuService.query({ appName: APP_NAME }, function(response) {
-                 if (response.length > 0) {
-                     vm.groups = response;
-                     // Call the metsiMenu plugin and plug it to sidebar navigation
-                     $timeout(function(){
-                         $element.metisMenu();
-                     });
-                 }
-             }, function(errorResponse) {
-             });
-         }
-     }
+        if (PrincipalService.isAuthenticated() == true) {
+            AuthorityAdminMenuService.query({appName: APP_NAME}, function (response) {
+                if (response.length > 0) {
+                    vm.groups = response;
+                    // Call the metsiMenu plugin and plug it to sidebar navigation
+                    $timeout(function () {
+                        $element.metisMenu();
+                    });
+                }
+            }, function (errorResponse) {
+            });
+        }
+    }
 };
 
 
 /**
  * ErrorPageController
  */
-function ErrorPageController ($state, $stateParams, $scope, JSONFormatterConfig) {
+function ErrorPageController($state, $stateParams, $scope, JSONFormatterConfig) {
     var vm = this;
-    
+
     vm.errorMessage = $stateParams.errorMessage;
 };
 
@@ -226,7 +226,7 @@ function ErrorPageController ($state, $stateParams, $scope, JSONFormatterConfig)
  */
 function LoginController($rootScope, $state, AuthenticationService) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.userName = null;
     vm.password = null;
@@ -234,41 +234,41 @@ function LoginController($rootScope, $state, AuthenticationService) {
     vm.login = login;
     vm.requestResetPassword = requestResetPassword;
     vm.isSaving = false;
-    
-    function login (event) {
+
+    function login(event) {
         event.preventDefault();
         vm.isSaving = true;
         AuthenticationService.login({
-            userName: vm.userName,
-            password: vm.password,
-            rememberMe: vm.rememberMe
-        },
-        function (data) {
-            vm.errorMsg = null;
+                userName: vm.userName,
+                password: vm.password,
+                rememberMe: vm.rememberMe
+            },
+            function (data) {
+                vm.errorMsg = null;
 //            if ($state.current.name === 'register' || $state.current.name === 'activate' ||
 //                $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
 //                $state.go('home');
 //            }
 
-            $rootScope.$broadcast('authenticationSuccess');
+                $rootScope.$broadcast('authenticationSuccess');
 
-            // previousState was set in the authExpiredInterceptor before being redirected to login modal.
-            // since login is successful, go to stored previousState and clear previousState
-            if (AuthenticationService.getPreviousState()) {
-                var previousState = AuthenticationService.getPreviousState();
-                AuthenticationService.resetPreviousState();
-                $state.go(previousState.name, previousState.params);
-            }
+                // previousState was set in the authExpiredInterceptor before being redirected to login modal.
+                // since login is successful, go to stored previousState and clear previousState
+                if (AuthenticationService.getPreviousState()) {
+                    var previousState = AuthenticationService.getPreviousState();
+                    AuthenticationService.resetPreviousState();
+                    $state.go(previousState.name, previousState.params);
+                }
 
-            $state.go('dashboard');
-        },
-        function (data) {
-            vm.errorMsg = data.error_description;
-            vm.isSaving = false;
-        });
+                $state.go('dashboard');
+            },
+            function (data) {
+                vm.errorMsg = data.error_description;
+                vm.isSaving = false;
+            });
     }
-    
-    function requestResetPassword () {
+
+    function requestResetPassword() {
         $state.go('requestReset');
     }
 };
@@ -276,14 +276,14 @@ function LoginController($rootScope, $state, AuthenticationService) {
 /**
  * NavbarController
  */
-function NavbarController ($rootScope, $scope, $translate, $state, AuthenticationService, PrincipalService, ProfileService) {
+function NavbarController($rootScope, $scope, $translate, $state, AuthenticationService, PrincipalService, ProfileService) {
     var vm = this;
 
     vm.isNavbarCollapsed = true;
     vm.isAuthenticated = PrincipalService.isAuthenticated;
     vm.changeLanguage = changeLanguage;
-    
-    ProfileService.getProfileInfo().then(function(response) {
+
+    ProfileService.getProfileInfo().then(function (response) {
         vm.inProduction = response.inProduction;
         vm.swaggerDisabled = response.swaggerDisabled;
     });
@@ -292,10 +292,10 @@ function NavbarController ($rootScope, $scope, $translate, $state, Authenticatio
     vm.toggleNavbar = toggleNavbar;
     vm.collapseNavbar = collapseNavbar;
     vm.$state = $state;
-    
+
     $rootScope.isNavbarLoaded = true;
-    
-    function changeLanguage (langKey) {
+
+    function changeLanguage(langKey) {
         $translate.use(langKey);
         $scope.language = langKey;
     };
@@ -317,9 +317,9 @@ function NavbarController ($rootScope, $scope, $translate, $state, Authenticatio
 /**
  * ProfileController
  */
-function ProfileController ($state, PrincipalService, AccountService) {
+function ProfileController($state, PrincipalService, AccountService) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.save = save;
     vm.isSaving = false;
@@ -340,16 +340,16 @@ function ProfileController ($state, PrincipalService, AccountService) {
         };
     };
 
-    PrincipalService.identity().then(function(account) {
+    PrincipalService.identity().then(function (account) {
         vm.profileAccount = copyAccount(account);
     });
 
-    function save () {
+    function save() {
         vm.isSaving = true;
         AccountService.update(vm.profileAccount,
             function (response) {
                 vm.isSaving = false;
-                PrincipalService.identity(true).then(function(account) {
+                PrincipalService.identity(true).then(function (account) {
                     vm.profileAccount = copyAccount(account);
                 });
             },
@@ -362,7 +362,7 @@ function ProfileController ($state, PrincipalService, AccountService) {
 /**
  * RegisterController
  */
-function RegisterController ($state, $timeout, AuthenticationService, RegisterService) {
+function RegisterController($state, $timeout, AuthenticationService, RegisterService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -371,24 +371,26 @@ function RegisterController ($state, $timeout, AuthenticationService, RegisterSe
     vm.registerAccount = {};
     vm.passwordNotMatch = false;
 
-    $timeout(function (){ angular.element('#userName').focus();} );
+    $timeout(function () {
+        angular.element('#userName').focus();
+    });
 
-    function register () {
+    function register() {
         if (vm.registerAccount.password !== vm.confirmPassword) {
             vm.passwordNotMatch = true;
         } else {
             vm.isSaving = true;
             RegisterService.save(vm.registerAccount,
-                    function (account) {
-                        vm.isSaving = false;
-                        vm.passwordNotMatch = false;
-                        $state.go('login');
-                    },
-                    function (response) {
-                        AuthenticationService.logout();
-                        vm.isSaving = false;
-                        vm.passwordNotMatch = false;
-                    });
+                function (account) {
+                    vm.isSaving = false;
+                    vm.passwordNotMatch = false;
+                    $state.go('login');
+                },
+                function (response) {
+                    AuthenticationService.logout();
+                    vm.isSaving = false;
+                    vm.passwordNotMatch = false;
+                });
         }
     }
 };
@@ -396,7 +398,7 @@ function RegisterController ($state, $timeout, AuthenticationService, RegisterSe
 /**
  * ActivationController
  */
-function ActivationController ($state, $stateParams, ActivateService) {
+function ActivationController($state, $stateParams, ActivateService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -405,21 +407,21 @@ function ActivationController ($state, $stateParams, ActivateService) {
 
     if ($stateParams.key) {
         ActivateService.get({key: $stateParams.key},
-                function (response) {
-                    vm.success = true;
-                    vm.fieldErrors = [];
-                },
-                function (response, headers) {
-                    vm.success = false;
-                    vm.errorMessage = response.data.message;
-                });
+            function (response) {
+                vm.success = true;
+                vm.fieldErrors = [];
+            },
+            function (response, headers) {
+                vm.success = false;
+                vm.errorMessage = response.data.message;
+            });
     }
 };
 
 /**
  * ForgotPasswordController
  */
-function ForgotPasswordController ($state, $timeout, PasswordResetInitService) {
+function ForgotPasswordController($state, $timeout, PasswordResetInitService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -429,28 +431,30 @@ function ForgotPasswordController ($state, $timeout, PasswordResetInitService) {
     vm.success = false;
     vm.errorMsg = null;
 
-    $timeout(function (){angular.element('#email').focus();});
+    $timeout(function () {
+        angular.element('#email').focus();
+    });
 
-    function requestReset () {
+    function requestReset() {
         vm.isSaving = true;
         vm.success = false;
         PasswordResetInitService.save(vm.resetAccount.email,
-                function (response) {
-                    vm.isSaving = false;
-                    vm.success = true;
-                },
-                function (response) {
-                    vm.isSaving = false;
-                    vm.success = false;
-                    vm.errorMsg = response.error_description;
-                });
+            function (response) {
+                vm.isSaving = false;
+                vm.success = true;
+            },
+            function (response) {
+                vm.isSaving = false;
+                vm.success = false;
+                vm.errorMsg = response.error_description;
+            });
     }
 };
 
 /**
  * ResetPasswordController
  */
-function ResetPasswordController ($stateParams, $timeout, PasswordResetFinishService, LoginService) {
+function ResetPasswordController($stateParams, $timeout, PasswordResetFinishService, LoginService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -464,7 +468,9 @@ function ResetPasswordController ($stateParams, $timeout, PasswordResetFinishSer
     vm.passwordNotMatch = false;
     vm.keyMissing = angular.isUndefined($stateParams.key);
 
-    $timeout(function (){angular.element('#password').focus();});
+    $timeout(function () {
+        angular.element('#password').focus();
+    });
 
     function finishReset() {
         vm.passwordNotMatch = false;
@@ -474,15 +480,15 @@ function ResetPasswordController ($stateParams, $timeout, PasswordResetFinishSer
         } else {
             vm.isSaving = true;
             PasswordResetFinishService.save({key: $stateParams.key, newPassword: vm.resetAccount.password},
-                    function (response) {
-                       vm.isSaving = false;
-                       vm.success = true;
-                    },
-                    function (response) {
-                        vm.isSaving = false;
-                        vm.success = false;
-                        vm.error = true;
-                    });
+                function (response) {
+                    vm.isSaving = false;
+                    vm.success = true;
+                },
+                function (response) {
+                    vm.isSaving = false;
+                    vm.success = false;
+                    vm.error = true;
+                });
         }
     }
 };
@@ -490,7 +496,7 @@ function ResetPasswordController ($stateParams, $timeout, PasswordResetFinishSer
 /**
  * PasswordController
  */
-function PasswordController ($state, PasswordService, PrincipalService) {
+function PasswordController($state, PasswordService, PrincipalService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -498,23 +504,23 @@ function PasswordController ($state, PasswordService, PrincipalService) {
     vm.isSaving = false;
     vm.passwordNotMatch = false;
 
-    PrincipalService.identity().then(function(account) {
+    PrincipalService.identity().then(function (account) {
         vm.account = account;
     });
 
-    function save () {
+    function save() {
         if (vm.password !== vm.confirmPassword) {
             vm.passwordNotMatch = true;
         } else {
             vm.passwordNotMatch = false;
             vm.isSaving = true;
             PasswordService.update(vm.password,
-                    function (response) {
-                        vm.isSaving = false;
-                    },
-                    function (response) {
-                        vm.isSaving = false;
-                    });
+                function (response) {
+                    vm.isSaving = false;
+                },
+                function (response) {
+                    vm.isSaving = false;
+                });
         }
     }
 };
@@ -524,7 +530,7 @@ function PasswordController ($state, PasswordService, PrincipalService) {
  */
 function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONSTANTS, pagingParams, criteria, AppService) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.links = null;
@@ -541,11 +547,15 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
     vm.transition = transition;
     vm.criteria = criteria;
     vm.del = del;
-    
+
     vm.loadAll();
-    
-    function loadAll () {
-        AppService.query({page: pagingParams.page - 1, size: vm.itemsPerPage, sort: sort()}, function (result, headers) {
+
+    function loadAll() {
+        AppService.query({
+            page: pagingParams.page - 1,
+            size: vm.itemsPerPage,
+            sort: sort()
+        }, function (result, headers) {
             vm.links = ParseLinksUtils.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
             vm.page = pagingParams.page;
@@ -553,7 +563,7 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
         });
     }
 
-    function sort () {
+    function sort() {
         var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
         if (vm.predicate !== 'name') {
             // default sort column
@@ -561,41 +571,41 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
         }
         return result;
     }
-    
-    function loadPage (page) {
+
+    function loadPage(page) {
         vm.page = page;
         vm.transition();
     }
-    
-    function transition () {
+
+    function transition() {
         $state.transitionTo($state.$current, {
             page: vm.page,
             sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')
         });
     }
-    
-    function checkPressEnter ($event) {
+
+    function checkPressEnter($event) {
         //按下enter键重新查询数据 
-        if($event.keyCode == 13){
+        if ($event.keyCode == 13) {
             vm.transition();
         }
     }
-    
-    function setEnabled (entity, enabled) {
+
+    function setEnabled(entity, enabled) {
         entity.enabled = enabled;
         AppService.update(entity,
-        function () {
-            vm.loadAll();
-        },
-        function () {
-            entity.enabled = !enabled;
-        });
+            function () {
+                vm.loadAll();
+            },
+            function () {
+                entity.enabled = !enabled;
+            });
     }
-    
-    function del (name) {
+
+    function del(name) {
         AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
             if (isConfirm) {
-                AppService.del({name : name},
+                AppService.del({name: name},
                     function () {
                         vm.loadAll();
                     },
@@ -616,7 +626,7 @@ function AppConfigController($state, $stateParams/*, $uibModalInstance*//*, AppS
     vm.isSaving = false;
     // vm.save = save;
     // vm.cancel = cancel;
-    if(vm.mode === 'create') {
+    if (vm.mode === 'create') {
         vm.entity = {
             name: null,
             enabled: true
@@ -645,70 +655,43 @@ function AppConfigController($state, $stateParams/*, $uibModalInstance*//*, AppS
     // }
 }
 
-function AppMonitorController($state/*, $stateParams, $uibModalInstance*//*, AppService, AccountService*/) {
+function AppMonitorController($state, AppMonitorService) {
     var vm = this;
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.mode = $state.current.data.mode;
-    // vm.authorities = AccountService.queryAuthorityNames({ enabled: true});
-    vm.entity = {};
+    vm.entity = AppMonitorService.findAll();
     vm.isSaving = false;
-    /*vm.save = save;
-    vm.cancel = cancel;*/
-    if(vm.mode === 'create') {
-        vm.entity = {
-            name: null,
-            enabled: true
-        };
+    vm.findAll = function findAll() {
+        vm.entity = AppMonitorService.findAll();
     }
-    /*else {
-        vm.entity = AppService.get({name : $stateParams.name});
-    }
-    function save () {
-        vm.isSaving = true;
-        if (vm.mode == 'edit') {
-            AppService.update(vm.entity, onSaveSuccess, onSaveError);
-        } else {
-            AppService.save(vm.entity, onSaveSuccess, onSaveError);
-        }
-    }
-    function onSaveSuccess (result) {
-        vm.isSaving = false;
-        $uibModalInstance.close(result);
-    }
-    function onSaveError (result) {
-        vm.isSaving = false;
-    }
-    function cancel () {
-        $uibModalInstance.dismiss('cancel');
-    }*/
 }
 
 /**
  * AppDialogController
  */
-function AppDialogController ($state, $stateParams, $uibModalInstance, AppService, AccountService) {
+function AppDialogController($state, $stateParams, $uibModalInstance, AppService, AccountService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.mode = $state.current.data.mode;
-    vm.authorities = AccountService.queryAuthorityNames({ enabled: true});
+    vm.authorities = AccountService.queryAuthorityNames({enabled: true});
     vm.entity = {};
     vm.isSaving = false;
     vm.save = save;
     vm.cancel = cancel;
-    
-    if(vm.mode === 'create') {
+
+    if (vm.mode === 'create') {
         vm.entity = {
             name: null,
             enabled: true
         };
     }
     else {
-       vm.entity = AppService.get({name : $stateParams.name});
+        vm.entity = AppService.get({name: $stateParams.name});
     }
-    
-    function save () {
+
+    function save() {
         vm.isSaving = true;
         if (vm.mode == 'edit') {
             AppService.update(vm.entity, onSaveSuccess, onSaveError);
@@ -716,17 +699,17 @@ function AppDialogController ($state, $stateParams, $uibModalInstance, AppServic
             AppService.save(vm.entity, onSaveSuccess, onSaveError);
         }
     }
-    
-    function onSaveSuccess (result) {
+
+    function onSaveSuccess(result) {
         vm.isSaving = false;
         $uibModalInstance.close(result);
     }
 
-    function onSaveError (result) {
+    function onSaveError(result) {
         vm.isSaving = false;
     }
-    
-    function cancel () {
+
+    function cancel() {
         $uibModalInstance.dismiss('cancel');
     }
 };
@@ -734,9 +717,9 @@ function AppDialogController ($state, $stateParams, $uibModalInstance, AppServic
 /**
  * AppDetailsController
  */
-function AppDetailsController ($state, $stateParams, AppService, entity) {
+function AppDetailsController($state, $stateParams, AppService, entity) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.grandfatherPageTitle = $state.$current.parent.parent.data.pageTitle;
@@ -748,7 +731,7 @@ function AppDetailsController ($state, $stateParams, AppService, entity) {
  */
 function AuthorityListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONSTANTS, pagingParams, criteria, AuthorityService) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.links = null;
@@ -765,11 +748,15 @@ function AuthorityListController($state, AlertUtils, ParseLinksUtils, PAGINATION
     vm.transition = transition;
     vm.criteria = criteria;
     vm.del = del;
-    
+
     vm.loadAll();
-    
-    function loadAll () {
-        AuthorityService.query({page: pagingParams.page - 1, size: vm.itemsPerPage, sort: sort()}, function (result, headers) {
+
+    function loadAll() {
+        AuthorityService.query({
+            page: pagingParams.page - 1,
+            size: vm.itemsPerPage,
+            sort: sort()
+        }, function (result, headers) {
             vm.links = ParseLinksUtils.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
             vm.page = pagingParams.page;
@@ -777,7 +764,7 @@ function AuthorityListController($state, AlertUtils, ParseLinksUtils, PAGINATION
         });
     }
 
-    function sort () {
+    function sort() {
         var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
         if (vm.predicate !== 'name') {
             // default sort column
@@ -785,41 +772,41 @@ function AuthorityListController($state, AlertUtils, ParseLinksUtils, PAGINATION
         }
         return result;
     }
-    
-    function loadPage (page) {
+
+    function loadPage(page) {
         vm.page = page;
         vm.transition();
     }
-    
-    function transition () {
+
+    function transition() {
         $state.transitionTo($state.$current, {
             page: vm.page,
             sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')
         });
     }
-    
-    function checkPressEnter ($event) {
+
+    function checkPressEnter($event) {
         //按下enter键重新查询数据 
-        if($event.keyCode == 13){
+        if ($event.keyCode == 13) {
             vm.transition();
         }
     }
-    
-    function setEnabled (entity, enabled) {
+
+    function setEnabled(entity, enabled) {
         entity.enabled = enabled;
         AuthorityService.update(entity,
-        function () {
-            vm.loadAll();
-        },
-        function () {
-            entity.enabled = !enabled;
-        });
+            function () {
+                vm.loadAll();
+            },
+            function () {
+                entity.enabled = !enabled;
+            });
     }
-    
-    function del (name) {
+
+    function del(name) {
         AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
             if (isConfirm) {
-                AuthorityService.del({name : name},
+                AuthorityService.del({name: name},
                     function () {
                         vm.loadAll();
                     },
@@ -833,7 +820,7 @@ function AuthorityListController($state, AlertUtils, ParseLinksUtils, PAGINATION
 /**
  * AuthorityDialogController
  */
-function AuthorityDialogController ($state, $stateParams, $uibModalInstance, AuthorityService) {
+function AuthorityDialogController($state, $stateParams, $uibModalInstance, AuthorityService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -842,8 +829,8 @@ function AuthorityDialogController ($state, $stateParams, $uibModalInstance, Aut
     vm.isSaving = false;
     vm.save = save;
     vm.cancel = cancel;
-    
-    if(vm.mode === 'create') {
+
+    if (vm.mode === 'create') {
         vm.entity = {
             name: null,
             systemLevel: false,
@@ -851,10 +838,10 @@ function AuthorityDialogController ($state, $stateParams, $uibModalInstance, Aut
         };
     }
     else {
-       vm.entity = AuthorityService.get({name : $stateParams.name});
+        vm.entity = AuthorityService.get({name: $stateParams.name});
     }
-    
-    function save () {
+
+    function save() {
         vm.isSaving = true;
         if (vm.mode == 'edit') {
             AuthorityService.update(vm.entity, onSaveSuccess, onSaveError);
@@ -862,17 +849,17 @@ function AuthorityDialogController ($state, $stateParams, $uibModalInstance, Aut
             AuthorityService.save(vm.entity, onSaveSuccess, onSaveError);
         }
     }
-    
-    function onSaveSuccess (result) {
+
+    function onSaveSuccess(result) {
         vm.isSaving = false;
         $uibModalInstance.close(result);
     }
 
-    function onSaveError (result) {
+    function onSaveError(result) {
         vm.isSaving = false;
     }
-    
-    function cancel () {
+
+    function cancel() {
         $uibModalInstance.dismiss('cancel');
     }
 };
@@ -882,7 +869,7 @@ function AuthorityDialogController ($state, $stateParams, $uibModalInstance, Aut
  */
 function AppAuthorityListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONSTANTS, pagingParams, criteria, AppAuthorityService, AppService, AuthorityService) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.apps = AppService.queryAll();
@@ -901,11 +888,17 @@ function AppAuthorityListController($state, AlertUtils, ParseLinksUtils, PAGINAT
     vm.transition = transition;
     vm.criteria = criteria;
     vm.del = del;
-    
+
     vm.loadAll();
-    
-    function loadAll () {
-        AppAuthorityService.query({page: pagingParams.page - 1, size: vm.itemsPerPage, sort: sort(), appName: vm.criteria.appName, authorityName: vm.criteria.authorityName}, function (result, headers) {
+
+    function loadAll() {
+        AppAuthorityService.query({
+            page: pagingParams.page - 1,
+            size: vm.itemsPerPage,
+            sort: sort(),
+            appName: vm.criteria.appName,
+            authorityName: vm.criteria.authorityName
+        }, function (result, headers) {
             vm.links = ParseLinksUtils.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
             vm.page = pagingParams.page;
@@ -913,7 +906,7 @@ function AppAuthorityListController($state, AlertUtils, ParseLinksUtils, PAGINAT
         });
     }
 
-    function sort () {
+    function sort() {
         var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
         if (vm.predicate !== 'appName') {
             // default sort column
@@ -921,43 +914,43 @@ function AppAuthorityListController($state, AlertUtils, ParseLinksUtils, PAGINAT
         }
         return result;
     }
-    
-    function loadPage (page) {
+
+    function loadPage(page) {
         vm.page = page;
         vm.transition();
     }
-    
-    function transition () {
+
+    function transition() {
         $state.transitionTo($state.$current, {
             page: vm.page,
             sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
             appName: vm.criteria.appName,
-            authorityName:  vm.criteria.authorityName
+            authorityName: vm.criteria.authorityName
         });
     }
-    
-    function checkPressEnter ($event) {
+
+    function checkPressEnter($event) {
         //按下enter键重新查询数据 
-        if($event.keyCode == 13){
+        if ($event.keyCode == 13) {
             vm.transition();
         }
     }
-    
-    function setEnabled (entity, enabled) {
+
+    function setEnabled(entity, enabled) {
         entity.enabled = enabled;
         AppAuthorityService.update(entity,
-        function () {
-            vm.loadAll();
-        },
-        function () {
-            entity.enabled = !enabled;
-        });
+            function () {
+                vm.loadAll();
+            },
+            function () {
+                entity.enabled = !enabled;
+            });
     }
-    
-    function del (id) {
+
+    function del(id) {
         AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
             if (isConfirm) {
-                AppAuthorityService.del({id : id},
+                AppAuthorityService.del({id: id},
                     function () {
                         vm.loadAll();
                     },
@@ -971,7 +964,7 @@ function AppAuthorityListController($state, AlertUtils, ParseLinksUtils, PAGINAT
 /**
  * AppAuthorityDialogController
  */
-function AppAuthorityDialogController ($state, $stateParams, $uibModalInstance, AppAuthorityService, AppService, AuthorityService) {
+function AppAuthorityDialogController($state, $stateParams, $uibModalInstance, AppAuthorityService, AppService, AuthorityService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -982,20 +975,20 @@ function AppAuthorityDialogController ($state, $stateParams, $uibModalInstance, 
     vm.isSaving = false;
     vm.save = save;
     vm.cancel = cancel;
-    
-    if(vm.mode === 'create') {
+
+    if (vm.mode === 'create') {
         vm.entity = {
             id: null,
             appName: null,
             authorityName: null
-            
+
         };
     }
     else {
-       vm.entity = AppAuthorityService.get({id : $stateParams.id});
+        vm.entity = AppAuthorityService.get({id: $stateParams.id});
     }
-    
-    function save () {
+
+    function save() {
         vm.isSaving = true;
         if (vm.mode == 'edit') {
             AppAuthorityService.update(vm.entity, onSaveSuccess, onSaveError);
@@ -1003,17 +996,17 @@ function AppAuthorityDialogController ($state, $stateParams, $uibModalInstance, 
             AppAuthorityService.save(vm.entity, onSaveSuccess, onSaveError);
         }
     }
-    
-    function onSaveSuccess (result) {
+
+    function onSaveSuccess(result) {
         vm.isSaving = false;
         $uibModalInstance.close(result);
     }
 
-    function onSaveError (result) {
+    function onSaveError(result) {
         vm.isSaving = false;
     }
-    
-    function cancel () {
+
+    function cancel() {
         $uibModalInstance.dismiss('cancel');
     }
 };
@@ -1023,7 +1016,7 @@ function AppAuthorityDialogController ($state, $stateParams, $uibModalInstance, 
  */
 function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONSTANTS, pagingParams, criteria, UserService, PrincipalService) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.currentAccount = null;
@@ -1043,18 +1036,23 @@ function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
     vm.criteria = criteria;
     vm.del = del;
     vm.resetPassword = resetPassword;
-    
+
     vm.loadAll();
-    
-    PrincipalService.identity().then(function(account) {
+
+    PrincipalService.identity().then(function (account) {
         vm.currentAccount = account;
     });
-    
-    function loadAll () {
-        UserService.query({page: pagingParams.page - 1, size: vm.itemsPerPage, sort: sort(), login: vm.criteria.login}, function (result, headers) {
+
+    function loadAll() {
+        UserService.query({
+            page: pagingParams.page - 1,
+            size: vm.itemsPerPage,
+            sort: sort(),
+            login: vm.criteria.login
+        }, function (result, headers) {
             //hide anonymous user from user management: it's a required user for Spring Security
-            for(var i in result) {
-                if(result[i]['userName'] === 'anonymoususer') {
+            for (var i in result) {
+                if (result[i]['userName'] === 'anonymoususer') {
                     result.splice(i, co1);
                 }
             }
@@ -1065,7 +1063,7 @@ function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
         });
     }
 
-    function sort () {
+    function sort() {
         var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
         if (vm.predicate !== 'modifiedTime') {
             // default sort column
@@ -1073,49 +1071,49 @@ function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
         }
         return result;
     }
-    
-    function loadPage (page) {
+
+    function loadPage(page) {
         vm.page = page;
         vm.transition();
     }
-    
-    function transition () {
+
+    function transition() {
         $state.transitionTo($state.$current, {
             page: vm.page,
             sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
             login: vm.criteria.login
         });
     }
-    
-    function checkPressEnter ($event) {
+
+    function checkPressEnter($event) {
         //按下enter键重新查询数据 
-        if($event.keyCode == 13){
+        if ($event.keyCode == 13) {
             vm.transition();
         }
     }
-    
-    function setActive (user, isActivated) {
+
+    function setActive(user, isActivated) {
         user.activated = isActivated;
         UserService.update(user, function () {
-            vm.loadAll();
-        },
-        function () {
-            user.activated = !isActivated;
-        });
+                vm.loadAll();
+            },
+            function () {
+                user.activated = !isActivated;
+            });
     }
 
-    function setEnabled (entity, enabled) {
+    function setEnabled(entity, enabled) {
         entity.enabled = enabled;
         UserService.update(entity,
-        function () {
-            vm.loadAll();
-        },
-        function () {
-            entity.enabled = !enabled;
-        });
+            function () {
+                vm.loadAll();
+            },
+            function () {
+                entity.enabled = !enabled;
+            });
     }
-    
-    function del (userName) {
+
+    function del(userName) {
         AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
             if (isConfirm) {
                 UserService.del({userName: userName},
@@ -1127,9 +1125,9 @@ function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
             }
         });
     }
-    
-    function resetPassword (userName) {
-         AlertUtils.createResetPasswordConfirmation('密码恢复到初始值?', function (isConfirm) {
+
+    function resetPassword(userName) {
+        AlertUtils.createResetPasswordConfirmation('密码恢复到初始值?', function (isConfirm) {
             if (isConfirm) {
                 UserService.resetPassword({userName: userName},
                     function () {
@@ -1142,18 +1140,18 @@ function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
 /**
  * UserDialogController
  */
-function UserDialogController ($state, $stateParams, $uibModalInstance, UserService, AccountService, entity) {
+function UserDialogController($state, $stateParams, $uibModalInstance, UserService, AccountService, entity) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.mode = $state.current.data.mode;
-    vm.authorities = AccountService.queryAuthorityNames({ enabled: true});
+    vm.authorities = AccountService.queryAuthorityNames({enabled: true});
     vm.entity = entity;
     vm.isSaving = false;
     vm.save = save;
     vm.cancel = cancel;
-    
-    function save () {
+
+    function save() {
         vm.isSaving = true;
         if (vm.mode == 'edit') {
             UserService.update(vm.entity, onSaveSuccess, onSaveError);
@@ -1161,17 +1159,17 @@ function UserDialogController ($state, $stateParams, $uibModalInstance, UserServ
             UserService.save(vm.entity, onSaveSuccess, onSaveError);
         }
     }
-    
-    function onSaveSuccess (result) {
+
+    function onSaveSuccess(result) {
         vm.isSaving = false;
         $uibModalInstance.close(result);
     }
 
-    function onSaveError (result) {
+    function onSaveError(result) {
         vm.isSaving = false;
     }
-    
-    function cancel () {
+
+    function cancel() {
         $uibModalInstance.dismiss('cancel');
     }
 };
@@ -1179,9 +1177,9 @@ function UserDialogController ($state, $stateParams, $uibModalInstance, UserServ
 /**
  * UserDetailsController
  */
-function UserDetailsController ($state, $stateParams, UserService, entity) {
+function UserDetailsController($state, $stateParams, UserService, entity) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.grandfatherPageTitle = $state.$current.parent.parent.data.pageTitle;
@@ -1193,7 +1191,7 @@ function UserDetailsController ($state, $stateParams, UserService, entity) {
  */
 function OauthClientListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONSTANTS, pagingParams, criteria, OauthClientService) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.links = null;
@@ -1209,11 +1207,16 @@ function OauthClientListController($state, AlertUtils, ParseLinksUtils, PAGINATI
     vm.transition = transition;
     vm.criteria = criteria;
     vm.del = del;
-    
+
     vm.loadAll();
-    
-    function loadAll () {
-        OauthClientService.query({page: pagingParams.page - 1, size: vm.itemsPerPage, sort: sort(), clientDetailId: vm.criteria.clientDetailId}, function (result, headers) {
+
+    function loadAll() {
+        OauthClientService.query({
+            page: pagingParams.page - 1,
+            size: vm.itemsPerPage,
+            sort: sort(),
+            clientDetailId: vm.criteria.clientDetailId
+        }, function (result, headers) {
             vm.links = ParseLinksUtils.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
             vm.page = pagingParams.page;
@@ -1221,7 +1224,7 @@ function OauthClientListController($state, AlertUtils, ParseLinksUtils, PAGINATI
         });
     }
 
-    function sort () {
+    function sort() {
         var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
         if (vm.predicate !== 'client_id') {
             // default sort column
@@ -1229,28 +1232,28 @@ function OauthClientListController($state, AlertUtils, ParseLinksUtils, PAGINATI
         }
         return result;
     }
-    
-    function loadPage (page) {
+
+    function loadPage(page) {
         vm.page = page;
         vm.transition();
     }
-    
-    function transition () {
+
+    function transition() {
         $state.transitionTo($state.$current, {
             page: vm.page,
             sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
             clientDetailId: vm.criteria.clientDetailId
         });
     }
-    
-    function checkPressEnter ($event) {
+
+    function checkPressEnter($event) {
         //按下enter键重新查询数据 
-        if($event.keyCode == 13){
+        if ($event.keyCode == 13) {
             vm.transition();
         }
     }
-    
-    function del (id) {
+
+    function del(id) {
         AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
             if (isConfirm) {
                 OauthClientService.del({clientId: id},
@@ -1267,7 +1270,7 @@ function OauthClientListController($state, AlertUtils, ParseLinksUtils, PAGINATI
 /**
  * OauthClientDialogController
  */
-function OauthClientDialogController ($state, $stateParams, $uibModalInstance, OauthClientService, entity) {
+function OauthClientDialogController($state, $stateParams, $uibModalInstance, OauthClientService, entity) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -1276,8 +1279,8 @@ function OauthClientDialogController ($state, $stateParams, $uibModalInstance, O
     vm.isSaving = false;
     vm.save = save;
     vm.cancel = cancel;
-    
-    function save () {
+
+    function save() {
         vm.isSaving = true;
         if (vm.mode == 'edit') {
             OauthClientService.update(vm.entity, onSaveSuccess, onSaveError);
@@ -1285,17 +1288,17 @@ function OauthClientDialogController ($state, $stateParams, $uibModalInstance, O
             OauthClientService.save(vm.entity, onSaveSuccess, onSaveError);
         }
     }
-    
-    function onSaveSuccess (result) {
+
+    function onSaveSuccess(result) {
         vm.isSaving = false;
         $uibModalInstance.close(result);
     }
 
-    function onSaveError (result) {
+    function onSaveError(result) {
         vm.isSaving = false;
     }
-    
-    function cancel () {
+
+    function cancel() {
         $uibModalInstance.dismiss('cancel');
     }
 };
@@ -1303,9 +1306,9 @@ function OauthClientDialogController ($state, $stateParams, $uibModalInstance, O
 /**
  * OauthClientDetailsController
  */
-function OauthClientDetailsController ($state, $stateParams, OauthClientService, entity) {
+function OauthClientDetailsController($state, $stateParams, OauthClientService, entity) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.grandfatherPageTitle = $state.$current.parent.parent.data.pageTitle;
@@ -1317,7 +1320,7 @@ function OauthClientDetailsController ($state, $stateParams, OauthClientService,
  */
 function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONSTANTS, pagingParams, criteria, AdminMenuService, AppService, APP_NAME) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.apps = AppService.queryAll();
@@ -1334,11 +1337,16 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
     vm.transition = transition;
     vm.criteria = criteria;
     vm.del = del;
-    
+
     vm.loadAll();
-    
-    function loadAll () {
-        AdminMenuService.query({page: pagingParams.page - 1, size: vm.itemsPerPage, sort: sort(), appName: vm.criteria.app}, function (result, headers) {
+
+    function loadAll() {
+        AdminMenuService.query({
+            page: pagingParams.page - 1,
+            size: vm.itemsPerPage,
+            sort: sort(),
+            appName: vm.criteria.app
+        }, function (result, headers) {
             vm.links = ParseLinksUtils.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
             vm.page = pagingParams.page;
@@ -1346,7 +1354,7 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
         });
     }
 
-    function sort () {
+    function sort() {
         var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
         if (vm.predicate !== 'modifiedTime') {
             // default sort column
@@ -1354,28 +1362,28 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
         }
         return result;
     }
-    
-    function loadPage (page) {
+
+    function loadPage(page) {
         vm.page = page;
         vm.transition();
     }
-    
-    function transition () {
+
+    function transition() {
         $state.transitionTo($state.$current, {
             page: vm.page,
             sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
             app: vm.criteria.app
         });
     }
-    
-    function checkPressEnter ($event) {
+
+    function checkPressEnter($event) {
         //按下enter键重新查询数据 
-        if($event.keyCode == 13){
+        if ($event.keyCode == 13) {
             vm.transition();
         }
     }
-    
-    function del (id) {
+
+    function del(id) {
         AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
             if (isConfirm) {
                 AdminMenuService.del({id: id},
@@ -1392,7 +1400,7 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
 /**
  * AdminMenuDialogController
  */
-function AdminMenuDialogController ($state, $stateParams, $uibModalInstance, AdminMenuService, AppService, APP_NAME, entity) {
+function AdminMenuDialogController($state, $stateParams, $uibModalInstance, AdminMenuService, AppService, APP_NAME, entity) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -1404,10 +1412,10 @@ function AdminMenuDialogController ($state, $stateParams, $uibModalInstance, Adm
     vm.isSaving = false;
     vm.save = save;
     vm.cancel = cancel;
-    
+
     vm.searchParentMenus();
-    
-    function save () {
+
+    function save() {
         vm.isSaving = true;
         if (vm.mode == 'edit') {
             AdminMenuService.update(vm.entity, onSaveSuccess, onSaveError);
@@ -1415,26 +1423,26 @@ function AdminMenuDialogController ($state, $stateParams, $uibModalInstance, Adm
             AdminMenuService.save(vm.entity, onSaveSuccess, onSaveError);
         }
     }
-    
-    function searchParentMenus () {
-        if(vm.entity && vm.entity.appName) {
-            vm.parentMenus = AdminMenuService.queryParentMenu({ app: vm.entity.appName });
+
+    function searchParentMenus() {
+        if (vm.entity && vm.entity.appName) {
+            vm.parentMenus = AdminMenuService.queryParentMenu({app: vm.entity.appName});
         }
         else {
             vm.parentMenus = [];
         }
     }
-    
-    function onSaveSuccess (result) {
+
+    function onSaveSuccess(result) {
         vm.isSaving = false;
         $uibModalInstance.close(result);
     }
 
-    function onSaveError (result) {
+    function onSaveError(result) {
         vm.isSaving = false;
     }
-    
-    function cancel () {
+
+    function cancel() {
         $uibModalInstance.dismiss('cancel');
     }
 };
@@ -1442,7 +1450,7 @@ function AdminMenuDialogController ($state, $stateParams, $uibModalInstance, Adm
 /**
  * AuthorityAdminMenuController
  */
-function AuthorityAdminMenuController ($state, AuthorityAdminMenuService, AppAuthorityService, AppService) {
+function AuthorityAdminMenuController($state, AuthorityAdminMenuService, AppAuthorityService, AppService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -1456,46 +1464,54 @@ function AuthorityAdminMenuController ($state, AuthorityAdminMenuService, AppAut
     vm.searchMenus = searchMenus;
     vm.save = save;
 
-    function searchAuthorities () {
-        if(vm.criteria && vm.criteria.appName) {
+    function searchAuthorities() {
+        if (vm.criteria && vm.criteria.appName) {
             vm.authorities = AppAuthorityService.queryByAppName({id: vm.criteria.appName});
         }
         else {
             vm.authorities = [];
         }
     }
-    function searchMenus () {
-        if(vm.criteria.authorityName) {
-            AuthorityAdminMenuService.queryMenusByAuthorityName({ appName: vm.criteria.appName, authorityName: vm.criteria.authorityName}, function(response){
+
+    function searchMenus() {
+        if (vm.criteria.authorityName) {
+            AuthorityAdminMenuService.queryMenusByAuthorityName({
+                appName: vm.criteria.appName,
+                authorityName: vm.criteria.authorityName
+            }, function (response) {
                 vm.allMenus = response;
-            },function(errorResponse){
+            }, function (errorResponse) {
             });
         }
         else {
             vm.allMenus = [];
         }
     }
-    
-    function save () {
+
+    function save() {
         vm.isSaving = true;
-        if(vm.criteria.appName && vm.criteria.authorityName){
+        if (vm.criteria.appName && vm.criteria.authorityName) {
             var adminMenuIds = [];
             adminMenuIds = getAllCheckIds(vm.allMenus, adminMenuIds);
-            AuthorityAdminMenuService.updateAuthorityMenus({ appName: vm.criteria.appName, authorityName: vm.criteria.authorityName , adminMenuIds: adminMenuIds},
-            function (response){
-                vm.isSaving = false;
-            }, function (errorResponse){
-                vm.isSaving = false;
-            });
+            AuthorityAdminMenuService.updateAuthorityMenus({
+                    appName: vm.criteria.appName,
+                    authorityName: vm.criteria.authorityName,
+                    adminMenuIds: adminMenuIds
+                },
+                function (response) {
+                    vm.isSaving = false;
+                }, function (errorResponse) {
+                    vm.isSaving = false;
+                });
         }
     }
-    
-    function getAllCheckIds(allMenus, adminMenuIds){
-        for(var i=0; i < allMenus.length; i++){
-            if(allMenus[i].checked){
-                adminMenuIds.push(allMenus[i].id);  
+
+    function getAllCheckIds(allMenus, adminMenuIds) {
+        for (var i = 0; i < allMenus.length; i++) {
+            if (allMenus[i].checked) {
+                adminMenuIds.push(allMenus[i].id);
             }
-            if(allMenus[i].subItems){
+            if (allMenus[i].subItems) {
                 getAllCheckIds(allMenus[i].subItems, adminMenuIds);
             }
         }
@@ -1505,9 +1521,9 @@ function AuthorityAdminMenuController ($state, AuthorityAdminMenuService, AppAut
 
 /**
  * MetricsController
- * 
+ *
  */
-function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) {
+function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -1521,20 +1537,20 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
      * Options for Doughnut chart
      */
     vm.doughnutOptions = {
-        segmentShowStroke : true,
-        segmentStrokeColor : "#fff",
-        segmentStrokeWidth : 2,
-        percentageInnerCutout : 45, // This is 0 for Pie charts
-        animationSteps : 100,
-        animationEasing : "easeOutBounce",
-        animateRotate : true,
-        animateScale : false
+        segmentShowStroke: true,
+        segmentStrokeColor: "#fff",
+        segmentStrokeWidth: 2,
+        percentageInnerCutout: 45, // This is 0 for Pie charts
+        animationSteps: 100,
+        animationEasing: "easeOutBounce",
+        animateRotate: true,
+        animateScale: false
     };
-    
+
     vm.totalMemory = [
         {
             value: vm.metrics.gauges['jvm.memory.total.used'].value / 1000000,
-            color:"#a3e1d4",
+            color: "#a3e1d4",
             highlight: "#1ab394",
             label: "已使用"
         },
@@ -1545,11 +1561,11 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
             label: "未使用"
         }
     ];
-    
+
     vm.heapMemory = [
         {
             value: vm.metrics.gauges['jvm.memory.heap.used'].value / 1000000,
-            color:"#a3e1d4",
+            color: "#a3e1d4",
             highlight: "#1ab394",
             label: "已使用"
         },
@@ -1560,11 +1576,11 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
             label: "未使用"
         }
     ];
-    
+
     vm.edenSpaceMemory = [
         {
             value: vm.metrics.gauges['jvm.memory.pools.PS-Eden-Space.used'].value / 1000000,
-            color:"#a3e1d4",
+            color: "#a3e1d4",
             highlight: "#1ab394",
             label: "已使用"
         },
@@ -1575,11 +1591,11 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
             label: "未使用"
         }
     ];
-    
+
     vm.survivorSpaceMemory = [
         {
             value: vm.metrics.gauges['jvm.memory.pools.PS-Survivor-Space.used'].value / 1000000,
-            color:"#a3e1d4",
+            color: "#a3e1d4",
             highlight: "#1ab394",
             label: "已使用"
         },
@@ -1590,11 +1606,11 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
             label: "未使用"
         }
     ];
-    
+
     vm.oldSpaceMemory = [
         {
             value: vm.metrics.gauges['jvm.memory.pools.PS-Old-Gen.used'].value / 1000000,
-            color:"#a3e1d4",
+            color: "#a3e1d4",
             highlight: "#1ab394",
             label: "已使用"
         },
@@ -1605,11 +1621,11 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
             label: "未使用"
         }
     ];
-    
+
     vm.nonHeapMemory = [
         {
             value: vm.metrics.gauges['jvm.memory.non-heap.used'].value / 1000000,
-            color:"#a3e1d4",
+            color: "#a3e1d4",
             highlight: "#1ab394",
             label: "已使用"
         },
@@ -1620,11 +1636,11 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
             label: "未使用"
         }
     ];
-    
+
     vm.runnableThreads = [
         {
             value: vm.metrics.gauges['jvm.threads.runnable.count'].value,
-            color:"#a3e1d4",
+            color: "#a3e1d4",
             highlight: "#1ab394",
             label: "Runnable"
         },
@@ -1635,11 +1651,11 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
             label: "Others"
         }
     ];
-    
+
     vm.timedWaitingThreads = [
         {
             value: vm.metrics.gauges['jvm.threads.timed_waiting.count'].value,
-            color:"#a3e1d4",
+            color: "#a3e1d4",
             highlight: "#1ab394",
             label: "Timed waiting"
         },
@@ -1650,11 +1666,11 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
             label: "Others"
         }
     ];
-    
+
     vm.waitingThreads = [
         {
             value: vm.metrics.gauges['jvm.threads.waiting.count'].value,
-            color:"#a3e1d4",
+            color: "#a3e1d4",
             highlight: "#1ab394",
             label: "Waiting"
         },
@@ -1665,11 +1681,11 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
             label: "Others"
         }
     ];
-    
+
     vm.blockedThreads = [
         {
             value: vm.metrics.gauges['jvm.threads.blocked.count'].value,
-            color:"#a3e1d4",
+            color: "#a3e1d4",
             highlight: "#1ab394",
             label: "Blocked"
         },
@@ -1710,7 +1726,7 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
         });
     });
 
-    function refresh () {
+    function refresh() {
         vm.updatingMetrics = true;
         MetricsService.getMetrics().then(function (promise) {
             vm.metrics = promise;
@@ -1721,15 +1737,15 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
         });
     }
 
-    function refreshThreadDumpData () {
-        MetricsService.threadDump().then(function(data) {
+    function refreshThreadDumpData() {
+        MetricsService.threadDump().then(function (data) {
             $uibModal.open({
                 templateUrl: 'app/views/developer/metrics/metrics.modal.html',
                 controller: 'MetricsModalController',
                 controllerAs: 'vm',
                 size: 'lg',
                 resolve: {
-                    threadDump: function() {
+                    threadDump: function () {
                         return data;
                     }
                 }
@@ -1740,9 +1756,9 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
 
 /**
  * MetricsModalController
- * 
+ *
  */
-function MetricsModalController ($uibModalInstance, threadDump) {
+function MetricsModalController($uibModalInstance, threadDump) {
     var vm = this;
 
     vm.cancel = cancel;
@@ -1754,7 +1770,7 @@ function MetricsModalController ($uibModalInstance, threadDump) {
     vm.threadDumpTimedWaiting = 0;
     vm.threadDumpWaiting = 0;
 
-    angular.forEach(threadDump, function(value) {
+    angular.forEach(threadDump, function (value) {
         if (value.threadState === 'RUNNABLE') {
             vm.threadDumpRunnable += 1;
         } else if (value.threadState === 'WAITING') {
@@ -1769,11 +1785,11 @@ function MetricsModalController ($uibModalInstance, threadDump) {
     vm.threadDumpAll = vm.threadDumpRunnable + vm.threadDumpWaiting +
         vm.threadDumpTimedWaiting + vm.threadDumpBlocked;
 
-    function cancel () {
+    function cancel() {
         $uibModalInstance.dismiss('cancel');
     }
 
-    function getLabelClass (threadState) {
+    function getLabelClass(threadState) {
         if (threadState === 'RUNNABLE') {
             return 'label-success';
         } else if (threadState === 'WAITING') {
@@ -1786,7 +1802,7 @@ function MetricsModalController ($uibModalInstance, threadDump) {
     }
 };
 
-function HealthController ($state, HealthService, $uibModal) {
+function HealthController($state, HealthService, $uibModal) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -1799,7 +1815,7 @@ function HealthController ($state, HealthService, $uibModal) {
 
     vm.refresh();
 
-    function getLabelClass (statusState) {
+    function getLabelClass(statusState) {
         if (statusState === 'UP') {
             return 'label-primary';
         } else {
@@ -1807,31 +1823,31 @@ function HealthController ($state, HealthService, $uibModal) {
         }
     }
 
-    function refresh () {
+    function refresh() {
         vm.updatingHealth = true;
         HealthService.checkHealth().then(function (response) {
             vm.healthData = HealthService.transformHealthData(response);
             vm.updatingHealth = false;
         }, function (response) {
-            vm.healthData =  HealthService.transformHealthData(response.data);
+            vm.healthData = HealthService.transformHealthData(response.data);
             vm.updatingHealth = false;
         });
     }
 
-    function showHealth (health) {
+    function showHealth(health) {
         $uibModal.open({
             templateUrl: 'app/views/developer/health/health.modal.html',
             controller: 'HealthModalController',
             controllerAs: 'vm',
             size: 'lg',
             resolve: {
-                currentHealth: function() {
+                currentHealth: function () {
                     return health;
                 },
-                baseName: function() {
+                baseName: function () {
                     return vm.baseName;
                 },
-                subSystemName: function() {
+                subSystemName: function () {
                     return vm.subSystemName;
                 }
             }
@@ -1839,7 +1855,7 @@ function HealthController ($state, HealthService, $uibModal) {
     }
 };
 
-function HealthModalController ($uibModalInstance, currentHealth, baseName, subSystemName) {
+function HealthModalController($uibModalInstance, currentHealth, baseName, subSystemName) {
     var vm = this;
 
     vm.cancel = cancel;
@@ -1852,14 +1868,14 @@ function HealthModalController ($uibModalInstance, currentHealth, baseName, subS
     }
 };
 
-function ConfigurationController ($state, ConfigurationService) {
+function ConfigurationController($state, ConfigurationService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.allConfiguration = null;
     vm.configuration = null;
 
-    ConfigurationService.get().then(function(configuration) {
+    ConfigurationService.get().then(function (configuration) {
         vm.configuration = configuration;
     });
     ConfigurationService.getEnv().then(function (configuration) {
@@ -1867,7 +1883,7 @@ function ConfigurationController ($state, ConfigurationService) {
     });
 };
 
-function BeansController ($state, $http) {
+function BeansController($state, $http) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -1875,14 +1891,14 @@ function BeansController ($state, $http) {
     vm.refresh = refresh;
     vm.refresh();
 
-    function refresh () {
-        $http.get('management/beans').then(function(response) {
+    function refresh() {
+        $http.get('management/beans').then(function (response) {
             vm.items = response.data[0].beans;
         });
     }
 };
 
-function MappingsController ($state, $http) {
+function MappingsController($state, $http) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -1890,31 +1906,31 @@ function MappingsController ($state, $http) {
     vm.refresh = refresh;
     vm.refresh();
 
-    function refresh () {
-        $http.get('management/mappings').then(function(response) {
-            for(var key in response.data){
+    function refresh() {
+        $http.get('management/mappings').then(function (response) {
+            for (var key in response.data) {
                 var value = response.data[key];
                 vm.items.push({url: key, object: value});
-        	}
+            }
         });
     }
 };
 
-function TraceController ($state, $http) {
+function TraceController($state, $http) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.refresh = refresh;
     vm.refresh();
-    
-    function refresh () {
-        $http.get('management/trace').then(function(response) {
+
+    function refresh() {
+        $http.get('management/trace').then(function (response) {
             vm.items = response.data;
         });
     }
 };
 
-function AuditsController ($state, $filter, AuditsService, ParseLinksUtils, PAGINATION_CONSTANTS) {
+function AuditsController($state, $filter, AuditsService, ParseLinksUtils, PAGINATION_CONSTANTS) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -1937,11 +1953,17 @@ function AuditsController ($state, $filter, AuditsService, ParseLinksUtils, PAGI
     vm.previousMonth();
     vm.loadAll();
 
-    function loadAll () {
+    function loadAll() {
         var dateFormat = 'yyyy-MM-dd';
         var fromDate = $filter('date')(vm.fromDate, dateFormat);
         var toDate = $filter('date')(vm.toDate, dateFormat);
-        AuditsService.query({page: vm.page -1, size: vm.itemsPerPage, sort: [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')], from: fromDate, to: toDate}, function(result, headers){
+        AuditsService.query({
+            page: vm.page - 1,
+            size: vm.itemsPerPage,
+            sort: [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')],
+            from: fromDate,
+            to: toDate
+        }, function (result, headers) {
             vm.links = ParseLinksUtils.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
             vm.entities = result;
@@ -1949,13 +1971,13 @@ function AuditsController ($state, $filter, AuditsService, ParseLinksUtils, PAGI
     }
 
     // Date picker configuration
-    function today () {
+    function today() {
         // Today + 1 day - needed if the current day must be included
         var today = new Date();
         vm.toDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
     }
 
-    function previousMonth () {
+    function previousMonth() {
         var fromDate = new Date();
         if (fromDate.getMonth() === 0) {
             fromDate = new Date(fromDate.getFullYear() - 1, 11, fromDate.getDate());
@@ -1971,7 +1993,7 @@ function AuditsController ($state, $filter, AuditsService, ParseLinksUtils, PAGI
  */
 function DictListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONSTANTS, pagingParams, criteria, DictService) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.links = null;
     vm.loadAll = loadAll;
@@ -1987,11 +2009,16 @@ function DictListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
     vm.transition = transition;
     vm.criteria = criteria;
     vm.del = del;
-    
+
     vm.loadAll();
-    
-    function loadAll () {
-        DictService.query({page: pagingParams.page - 1, size: vm.itemsPerPage, sort: sort(), dictName: vm.criteria.dictName}, function (result, headers) {
+
+    function loadAll() {
+        DictService.query({
+            page: pagingParams.page - 1,
+            size: vm.itemsPerPage,
+            sort: sort(),
+            dictName: vm.criteria.dictName
+        }, function (result, headers) {
             vm.links = ParseLinksUtils.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
             vm.page = pagingParams.page;
@@ -1999,7 +2026,7 @@ function DictListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
         });
     }
 
-    function sort () {
+    function sort() {
         var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
         if (vm.predicate !== 'dictCode') {
             // default sort column
@@ -2007,39 +2034,39 @@ function DictListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
         }
         return result;
     }
-    
-    function loadPage (page) {
+
+    function loadPage(page) {
         vm.page = page;
         vm.transition();
     }
-    
-    function transition () {
+
+    function transition() {
         $state.transitionTo($state.$current, {
             page: vm.page,
             sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
             dictName: vm.criteria.dictName
         });
     }
-    
-    function checkPressEnter ($event) {
+
+    function checkPressEnter($event) {
         //按下enter键重新查询数据 
-        if($event.keyCode == 13){
+        if ($event.keyCode == 13) {
             vm.transition();
         }
     }
-    
-    function setEnabled (entity, enabled) {
+
+    function setEnabled(entity, enabled) {
         entity.enabled = enabled;
         DictService.update(entity,
-        function () {
-            vm.loadAll();
-        },
-        function () {
-            entity.enabled = !enabled;
-        });
+            function () {
+                vm.loadAll();
+            },
+            function () {
+                entity.enabled = !enabled;
+            });
     }
-    
-    function del (id) {
+
+    function del(id) {
         AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
             if (isConfirm) {
                 DictService.del({id: id},
@@ -2056,7 +2083,7 @@ function DictListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
 /**
  * DictDialogController
  */
-function DictDialogController ($state, $stateParams, $uibModalInstance, DictService, entity) {
+function DictDialogController($state, $stateParams, $uibModalInstance, DictService, entity) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -2065,8 +2092,8 @@ function DictDialogController ($state, $stateParams, $uibModalInstance, DictServ
     vm.isSaving = false;
     vm.save = save;
     vm.cancel = cancel;
-    
-    function save () {
+
+    function save() {
         vm.isSaving = true;
         if (vm.mode == 'edit') {
             DictService.update(vm.entity, onSaveSuccess, onSaveError);
@@ -2074,17 +2101,17 @@ function DictDialogController ($state, $stateParams, $uibModalInstance, DictServ
             DictService.save(vm.entity, onSaveSuccess, onSaveError);
         }
     }
-    
-    function onSaveSuccess (result) {
+
+    function onSaveSuccess(result) {
         vm.isSaving = false;
         $uibModalInstance.close(result);
     }
 
-    function onSaveError (result) {
+    function onSaveError(result) {
         vm.isSaving = false;
     }
-    
-    function cancel () {
+
+    function cancel() {
         $uibModalInstance.dismiss('cancel');
     }
 };
@@ -2094,7 +2121,7 @@ function DictDialogController ($state, $stateParams, $uibModalInstance, DictServ
  */
 function DictItemListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONSTANTS, pagingParams, criteria, DictService, DictItemService) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.dicts = DictService.queryAll();
     vm.links = null;
@@ -2111,11 +2138,17 @@ function DictItemListController($state, AlertUtils, ParseLinksUtils, PAGINATION_
     vm.transition = transition;
     vm.criteria = criteria;
     vm.del = del;
-    
+
     vm.loadAll();
-    
-    function loadAll () {
-        DictItemService.query({page: pagingParams.page - 1, size: vm.itemsPerPage, sort: sort(), dictCode: vm.criteria.dictCode, dictItemName: vm.criteria.dictItemName}, function (result, headers) {
+
+    function loadAll() {
+        DictItemService.query({
+            page: pagingParams.page - 1,
+            size: vm.itemsPerPage,
+            sort: sort(),
+            dictCode: vm.criteria.dictCode,
+            dictItemName: vm.criteria.dictItemName
+        }, function (result, headers) {
             vm.links = ParseLinksUtils.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
             vm.page = pagingParams.page;
@@ -2123,7 +2156,7 @@ function DictItemListController($state, AlertUtils, ParseLinksUtils, PAGINATION_
         });
     }
 
-    function sort () {
+    function sort() {
         var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
         if (vm.predicate !== 'dictCode') {
             // default sort column
@@ -2131,13 +2164,13 @@ function DictItemListController($state, AlertUtils, ParseLinksUtils, PAGINATION_
         }
         return result;
     }
-    
-    function loadPage (page) {
+
+    function loadPage(page) {
         vm.page = page;
         vm.transition();
     }
-    
-    function transition () {
+
+    function transition() {
         $state.transitionTo($state.$current, {
             page: vm.page,
             sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
@@ -2145,26 +2178,26 @@ function DictItemListController($state, AlertUtils, ParseLinksUtils, PAGINATION_
             dictItemName: vm.criteria.dictItemName
         });
     }
-    
-    function checkPressEnter ($event) {
+
+    function checkPressEnter($event) {
         //按下enter键重新查询数据 
-        if($event.keyCode == 13){
+        if ($event.keyCode == 13) {
             vm.transition();
         }
     }
-    
-    function setEnabled (entity, enabled) {
+
+    function setEnabled(entity, enabled) {
         entity.enabled = enabled;
         DictItemService.update(entity,
-        function () {
-            vm.loadAll();
-        },
-        function () {
-            entity.enabled = !enabled;
-        });
+            function () {
+                vm.loadAll();
+            },
+            function () {
+                entity.enabled = !enabled;
+            });
     }
-    
-    function del (id) {
+
+    function del(id) {
         AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
             if (isConfirm) {
                 DictItemService.del({id: id},
@@ -2181,18 +2214,18 @@ function DictItemListController($state, AlertUtils, ParseLinksUtils, PAGINATION_
 /**
  * DictItemDialogController
  */
-function DictItemDialogController ($state, $stateParams, $uibModalInstance, DictService, DictItemService, entity) {
+function DictItemDialogController($state, $stateParams, $uibModalInstance, DictService, DictItemService, entity) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
-    vm.dicts = DictService.queryAll({ enabled: true });
+    vm.dicts = DictService.queryAll({enabled: true});
     vm.mode = $state.current.data.mode;
     vm.entity = entity;
     vm.isSaving = false;
     vm.save = save;
     vm.cancel = cancel;
-    
-    function save () {
+
+    function save() {
         vm.isSaving = true;
         if (vm.mode == 'edit') {
             DictItemService.update(vm.entity, onSaveSuccess, onSaveError);
@@ -2200,17 +2233,17 @@ function DictItemDialogController ($state, $stateParams, $uibModalInstance, Dict
             DictItemService.save(vm.entity, onSaveSuccess, onSaveError);
         }
     }
-    
-    function onSaveSuccess (result) {
+
+    function onSaveSuccess(result) {
         vm.isSaving = false;
         $uibModalInstance.close(result);
     }
 
-    function onSaveError (result) {
+    function onSaveError(result) {
         vm.isSaving = false;
     }
-    
-    function cancel () {
+
+    function cancel() {
         $uibModalInstance.dismiss('cancel');
     }
 };
@@ -2218,40 +2251,40 @@ function DictItemDialogController ($state, $stateParams, $uibModalInstance, Dict
 /**
  * LogsController
  */
-function LogsController ($state, LogsService) {
+function LogsController($state, LogsService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.changeLevel = changeLevel;
     vm.loggers = LogsService.findAll();
 
-    function changeLevel (name, level) {
+    function changeLevel(name, level) {
         LogsService.changeLevel({name: name, level: level}, function () {
             vm.loggers = LogsService.findAll();
         });
     }
 };
 
-function RedisAdminController ($localStorage) {
+function RedisAdminController($localStorage) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.url = 'system/redis/admin?access_token=' + $localStorage.authenticationToken.access_token;
 };
 
-function ControlController ($state, $http, AlertUtils) {
+function ControlController($state, $http, AlertUtils) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.items = null;
     vm.shutdown = shutdown;
 
-    function shutdown () {
-        $http.post('management/shutdown').then(function(response) {
-            AlertUtils.success("Shutdown successfully", {});
-        },
-        function(response) {
-            AlertUtils.error("Shutdown failed", {});
-        });
+    function shutdown() {
+        $http.post('management/shutdown').then(function (response) {
+                AlertUtils.success("Shutdown successfully", {});
+            },
+            function (response) {
+                AlertUtils.error("Shutdown failed", {});
+            });
     }
 };
