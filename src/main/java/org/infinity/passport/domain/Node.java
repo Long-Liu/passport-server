@@ -11,9 +11,6 @@ import java.util.Objects;
 public class Node extends AbstractAuditableDomain implements Serializable {
     private static final long serialVersionUID = 6870791787609602812L;
 
-    @Id
-    private String id;
-
     private String serverAddress;
 
     private int port;
@@ -25,20 +22,12 @@ public class Node extends AbstractAuditableDomain implements Serializable {
     public Node() {
     }
 
-    public Node(String id, String serverAddress, int port, String healthContextPath, HealthState healthState) {
-        this.id = id;
+    public Node(String serverAddress, int port, String healthContextPath, HealthState healthState) {
+//        this.id = id;
         this.serverAddress = serverAddress;
         this.port = port;
         this.healthContextPath = healthContextPath;
         this.healthState = healthState;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getServerAddress() {

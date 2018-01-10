@@ -1,7 +1,7 @@
 package org.infinity.passport.domain;
 
 public enum HealthState {
-    HEALTH_STATE("健康","蓝色"), WARNING_STATE("警告","橙色"), ERROR_STATE("错误","红色");
+    GOOD("健康","蓝色"), WARNING("警告","橙色"), ERROR("错误","红色");
 
     private String name;
 
