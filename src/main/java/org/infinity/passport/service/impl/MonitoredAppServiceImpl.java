@@ -1,5 +1,6 @@
 package org.infinity.passport.service.impl;
 
+import com.esotericsoftware.kryo.util.ObjectMap;
 import org.infinity.passport.domain.HealthState;
 import org.infinity.passport.domain.MonitoredApp;
 import org.infinity.passport.domain.Node;
@@ -29,14 +30,18 @@ public class MonitoredAppServiceImpl implements MonitoredAppService {
     @Override
     public List<MonitoredApp> findAll() {
         List<MonitoredApp> all = mongoTemplate.findAll(MonitoredApp.class);
-        AtomicInteger errorSize = new AtomicInteger(0);
         all.parallelStream().forEach(e -> {
+        AtomicInteger errorSize = new AtomicInteger(0);
             e.getNodes().parallelStream().forEach(o -> {
-                String statusName = getNodeStatus(o).equals("up") ? "健康" : "出错";
-                String statusColor = statusName.equals("健康") ? "蓝色" : "红色";
-                HealthState healthState = new HealthState(statusName, statusColor);
-                o.setHealthState(healthState);
-                if (statusName.equals("出错")) {
+                try {
+                    String statusName = getNodeStatus(o).equals("up") ? "健康" : "出错";
+                    String statusColor = statusName.equals("健康") ? "蓝色" : "红色";
+                    HealthState healthState = new HealthState(statusName, statusColor);
+                    o.setHealthState(healthState);
+                    if (statusName.equals("出错")) {
+                        errorSize.getAndIncrement();
+                    }
+                } catch (Exception e1) {
                     errorSize.getAndIncrement();
                 }
             });
@@ -51,8 +56,8 @@ public class MonitoredAppServiceImpl implements MonitoredAppService {
         return all;
     }
 
-    private String getNodeStatus(Node node) {
-        ResponseEntity<Map> entity = restTemplate.getForEntity(node.getServerAddress()
+    private String getNodeStatus(Node node) throws Exception {
+        ResponseEntity<Map> entity = restTemplate.getForEntity("http://" + node.getServerAddress()
                 + node.getPort() + node.getHealthContextPath(), Map.class);
         return ((String) entity.getBody().get("status"));
     }
