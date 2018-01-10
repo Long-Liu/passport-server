@@ -12,7 +12,7 @@ import org.springframework.web.context.WebApplicationContext;
  * A replacement of web.xml
  *
  */
-public class WebXML extends SpringBootServletInitializer {
+public class WebXMLReplacer extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
