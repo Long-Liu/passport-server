@@ -1,13 +1,21 @@
 package org.infinity.passport.domain;
 
-public enum HealthState {
-    GOOD("健康","蓝色"), WARNING("警告","橙色"), ERROR("错误","红色");
+
+import java.io.Serializable;
+import java.util.Objects;
+
+public class HealthState implements Serializable {
+
+    private static final long serialVersionUID = 4252202444338082990L;
 
     private String name;
 
     private String color;
 
-    HealthState(String name,String color) {
+    public HealthState() {
+    }
+
+    public HealthState(String name, String color) {
         this.name = name;
         this.color = color;
     }
@@ -26,6 +34,20 @@ public enum HealthState {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HealthState that = (HealthState) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(color, that.color);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, color);
     }
 
     @Override

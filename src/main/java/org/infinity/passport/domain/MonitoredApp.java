@@ -3,6 +3,7 @@ package org.infinity.passport.domain;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import java.util.Objects;
 public class MonitoredApp extends AbstractAuditableDomain implements Serializable {
     private static final long serialVersionUID = 749065942851583410L;
 
-    @Id
+    @Field(value = "appName")
     @NotNull(message = "受监控的应用名不能为空")
     private String appName;
 
@@ -21,17 +22,14 @@ public class MonitoredApp extends AbstractAuditableDomain implements Serializabl
 
     private ResponsiblePerson responsiblePerson;
 
-    private HealthState healthState;
 
     public MonitoredApp() {
     }
 
-    public MonitoredApp(String appName, List<Node> nodes, ResponsiblePerson responsiblePerson,
-                        HealthState healthState) {
+    public MonitoredApp(String appName, List<Node> nodes, ResponsiblePerson responsiblePerson) {
         this.appName = appName;
         this.nodes = nodes;
         this.responsiblePerson = responsiblePerson;
-        this.healthState = healthState;
     }
 
     public String getAppName() {
@@ -58,14 +56,6 @@ public class MonitoredApp extends AbstractAuditableDomain implements Serializabl
         this.responsiblePerson = responsiblePerson;
     }
 
-    public HealthState getHealthState() {
-        return healthState;
-    }
-
-    public void setHealthState(HealthState healthState) {
-        this.healthState = healthState;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,13 +63,12 @@ public class MonitoredApp extends AbstractAuditableDomain implements Serializabl
         MonitoredApp that = (MonitoredApp) o;
         return Objects.equals(appName, that.appName) &&
                 Objects.equals(nodes, that.nodes) &&
-                Objects.equals(responsiblePerson, that.responsiblePerson) &&
-                healthState == that.healthState;
+                Objects.equals(responsiblePerson, that.responsiblePerson);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(appName, nodes, responsiblePerson, healthState);
+        return Objects.hash(appName, nodes, responsiblePerson);
     }
 
     @Override
@@ -88,7 +77,6 @@ public class MonitoredApp extends AbstractAuditableDomain implements Serializabl
                 "appName='" + appName + '\'' +
                 ", nodes=" + nodes +
                 ", responsiblePerson=" + responsiblePerson +
-                ", healthState=" + healthState +
                 '}';
     }
 }

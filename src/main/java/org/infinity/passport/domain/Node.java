@@ -17,17 +17,13 @@ public class Node extends AbstractAuditableDomain implements Serializable {
 
     private String healthContextPath;
 
-    private HealthState healthState;
-
     public Node() {
     }
 
-    public Node(String serverAddress, int port, String healthContextPath, HealthState healthState) {
-//        this.id = id;
+    public Node(String serverAddress, int port, String healthContextPath) {
         this.serverAddress = serverAddress;
         this.port = port;
         this.healthContextPath = healthContextPath;
-        this.healthState = healthState;
     }
 
     public String getServerAddress() {
@@ -52,14 +48,6 @@ public class Node extends AbstractAuditableDomain implements Serializable {
 
     public void setHealthContextPath(String healthContextPath) {
         this.healthContextPath = healthContextPath;
-    }
-
-    public HealthState getHealthState() {
-        return healthState;
-    }
-
-    public void setHealthState(HealthState healthState) {
-        this.healthState = healthState;
     }
 
     @Override
