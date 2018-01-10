@@ -139,7 +139,7 @@ public class UaaConfiguration {
                 .scopes("internal-app")
                 .autoApprove(true)
                 .authorizedGrantTypes("password", "authorization_code")
-                .accessTokenValiditySeconds((int) TimeUnit.MINUTES.toSeconds(5))
+                .accessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(7))
                 .refreshTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(7))
                 .and()
                 .withClient("third_party_client")
