@@ -17,14 +17,16 @@
 <div class="wrapper wrapper-content p-h-xs animated fadeInDown">
     <div class="row">
         <div class="col-lg-4" ng-repeat="e in vm.entity">
-            <div ng-class="{'健康':'widget red-bg p-lg text-center','警告':'widget red-bg p-lg text-center','错误':'widget red-bg p-lg text-center'}[e.healthState]">
+            <div ng-class="{'健康':'widget red-bg p-lg text-center','警告':'widget red-bg p-lg text-center','出错':'widget red-bg p-lg text-center'}[e.healthState.name]">
                 <div class="m-b-md">
                     <i class="fa fa-bell fa-4x"></i>
-                    <h1 class="m-xs">47</h1>
                     <h3 class="font-bold no-margins">
-                        Notification
+                        {{e.appName}}
                     </h3>
-                    <small>We detect the error.</small>
+                    <h1 class="m-xs">{{e.nodes.length}} nodes</h1>
+                    <small ng-repeat="o in e.nodes">
+                    <i class="fa fa-bell fa-2x" title="{{o.serverAddress}}"></i>
+                    </small>
                 </div>
             </div>
         </div>
