@@ -1,7 +1,7 @@
 package org.infinity.passport.config;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -24,8 +24,12 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class HttpClientConfiguration {
 
+    private final ApplicationProperties applicationProperties;
+
     @Autowired
-    private ApplicationProperties applicationProperties;
+    public HttpClientConfiguration(ApplicationProperties applicationProperties) {
+        this.applicationProperties = applicationProperties;
+    }
 
     @Bean
     @Description("Simple client http request factory")
@@ -34,7 +38,7 @@ public class HttpClientConfiguration {
         SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
         clientHttpRequestFactory
                 .setReadTimeout(applicationProperties.getHttpClientConnection().getGlobalReadTimeoutInSeconds() * 1000);
-        clientHttpRequestFactory.setConnectTimeout(1 * 1000);
+        clientHttpRequestFactory.setConnectTimeout(1000);
         return clientHttpRequestFactory;
     }
 
@@ -50,11 +54,10 @@ public class HttpClientConfiguration {
         // 每个主机的并发
         connectionManager.setDefaultMaxPerRoute(20);
         // 设置链接池和失败重试次数
-        CloseableHttpClient httpClient = HttpClientBuilder.create().setConnectionManager(connectionManager)
+        return HttpClientBuilder.create().setConnectionManager(connectionManager)
                 .setRetryHandler(new DefaultHttpRequestRetryHandler(
                         applicationProperties.getHttpClientConnection().getGlobalRetryCount(), true))
                 .build();
-        return httpClient;
     }
 
     @Bean
@@ -64,7 +67,7 @@ public class HttpClientConfiguration {
                 closeableHttpClient());
         clientHttpRequestFactory
                 .setReadTimeout(applicationProperties.getHttpClientConnection().getGlobalReadTimeoutInSeconds() * 1000);
-        clientHttpRequestFactory.setConnectTimeout(1 * 1000);
+        clientHttpRequestFactory.setConnectTimeout(1000);
         return clientHttpRequestFactory;
     }
 
@@ -73,21 +76,23 @@ public class HttpClientConfiguration {
     public RestTemplate globalRestTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(httpComponentsClientHttpRequestFactory());
-        restTemplate.setInterceptors(Arrays.asList(new SecurityHeaderClientHttpRequestInterceptor()));
+        restTemplate.setInterceptors(Collections.singletonList(new SecurityHeaderClientHttpRequestInterceptor()));
         return restTemplate;
     }
-}
 
-class SecurityHeaderClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
+    class SecurityHeaderClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
-    @Override
-    public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
-            throws IOException {
-        HttpRequestWrapper requestWrapper = new HttpRequestWrapper(request);
-        // 服务端获取到该Header值，然后删除首8位,尾部4位，剩余部分转换为时间，如果改时间在误差范围之内为合法请求
-        // millisecond: 13 bits
-        requestWrapper.getHeaders().add("X-Security-Code",
-                RandomStringUtils.randomNumeric(8) + System.currentTimeMillis() + RandomStringUtils.randomNumeric(4));
-        return execution.execute(requestWrapper, body);
+        @Override
+        public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+                throws IOException {
+            HttpRequestWrapper requestWrapper = new HttpRequestWrapper(request);
+            // 服务端获取到该Header值，然后删除首8位,尾部4位，剩余部分转换为时间，如果改时间在误差范围之内为合法请求
+            // millisecond: 13 bits
+            requestWrapper.getHeaders().add("X-Security-Code",
+                    RandomStringUtils.randomNumeric(8) + System.currentTimeMillis() + RandomStringUtils.randomNumeric(4));
+            return execution.execute(requestWrapper, body);
+        }
     }
 }
+
+
