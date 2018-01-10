@@ -1,0 +1,2 @@
+${AnsiColor.BRIGHT_BLUE}:: infinity org 🤓
+:: http://www.infinity.org ::${AnsiColor.DEFAULT}

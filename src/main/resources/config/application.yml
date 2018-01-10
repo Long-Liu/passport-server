@@ -1,0 +1,111 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overriden by the Spring profile you use,
+# for example application-dev.yml if you use the "dev" profile.
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+management: # Management http server configuration, used by ManagementServerProperties
+    security:
+        roles: ROLE_DEVELOPER
+    context-path: /management
+    health:
+        mail:
+            enabled: true
+        redis:
+            enabled: true
+        db:
+            enabled: true
+info: # These configuration can be exported to Environment, accessing URL /info can get these properties
+    artifact:
+        id: #project.artifactId#
+        name: #project.name#
+        version: #project.version#
+    project:
+        package: org.infinity.passport
+spring:
+    application:
+        name: ${info.artifact.name}
+    jackson:
+        serialization.write_dates_as_timestamps: false
+    profiles:
+        # The commented value for `active` can be replaced with valid spring profiles to load.
+        # Otherwise, it will be filled in by maven when building the WAR file
+        # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+        active: test
+    messages:
+        # Do not add the prefix classpath:, please refer to MessageSourceAutoConfiguration.getResources(ClassLoader classLoader, String name)
+        # TODO: basename only support the first massage resource for now.
+        basename: i18n/messages_zh_CN,i18n/messages_en_US
+        fallback-to-system-locale: false
+    mvc:
+        favicon:
+            enabled: false
+        locale: zh_CN
+    thymeleaf: #ThymeleafAutoConfiguration
+        mode: XHTML
+    http:
+        multipart: # Management http multipart configuration, used by MultipartProperties
+            enabled: true
+            max-file-size: 30MB
+            max-request-size: 30MB
+server: 
+    context-path: /uaa
+    # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
+    port: #app.server.port#
+    session:
+        cookie:
+            http-only: true
+logging:
+    config: classpath:config/spring-logback.xml
+security:
+    oauth2:
+        resource:
+            filter-order: 101 # The order of the filter chain used to authenticate tokens. Note: it must be greater than 100.
+banner:
+    charset: UTF-8
+    location: classpath:config/banner.txt
+# ===================================================================
+# Application specific properties
+# ===================================================================
+application:
+    http:
+        cache: # Used by the CachingHttpHeadersFilter
+            timeToLiveInDays: 31
+    async:
+        core-pool-size: 2
+        max-pool-size: 50
+        queue-capacity: 10000
+    cors: #By default CORS are not enabled. Uncomment to enable.
+        allowed-origins: "*"
+        allowed-methods: GET, PUT, POST, DELETE, OPTIONS
+        allowed-headers: "*"
+        exposed-headers:
+        allow-credentials: true
+        max-age: 1800
+    swagger:
+        api:
+            title: SSO Server API
+            description: SSO Server 接口文档
+        open-api:
+            title: SSO Server Open API
+            description: SSO Server 开放接口文档
+        version: #project.version#
+        terms-of-service-url: http://www.infinity.org
+        contact-name: louis
+        contact-url: http://www.infinity.org
+        contact-email: pm6422@126.com
+        license: 1.0
+        license-url: http://www.apache.org/licenses/LICENSE-2.0.html
+        host: 
+    ribbon:
+        # comma seperated list of profiles to show a ribbon on the GUI
+        display-on-active-profiles: dev,test,demo,preprod
+    user-audit-event:
+        enabled: true

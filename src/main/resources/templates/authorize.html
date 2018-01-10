@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+    <head>
+        <title tiles:fragment="title">DeepBrain | Authorize</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="shortcut icon" href="../favicon.png" />
+        <link rel="stylesheet" th:href="@{../content/css/bootstrap.css}" />
+        <link rel="stylesheet" th:href="@{../content/font-awesome/css/font-awesome.min.css}" />
+        <link rel="stylesheet" th:href="@{../content/css/animate.css}" />
+        <link rel="stylesheet" th:href="@{../content/css/style.css}" />
+    </head>
+    <body class="gray-bg" th:style="'background:url(' + @{/content/img/background/bg4.jpg} + ');background-size:cover;'">
+        <div class="ribbon hidden"><a href="" ></a></div>
+        <div class="loginColumns text-center loginscreen animated bounceInDown">
+            <h1 class="logo-name" style="font-size:65px">Authorize</h1>
+            <h2 class="text-info">
+                Do you authorize <strong th:text="${authorizationRequest.clientId}"></strong><br/> at 
+                <strong th:text="${authorizationRequest.redirectUri}"></strong><br/> to access your protected resources
+                with scope <strong th:text="${authorizationRequest.scope}"></strong>.
+            </h2>
+            <br/>
+            <br/>
+            <div class="row">
+                <div class="col-md-6">
+                    <form id="confirmationForm" action="../oauth/authorize" method="post">
+                        <input type="hidden" name="user_oauth_approval" value="true"/>
+                        <input type="hidden" id="csrf_token" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <div class="pull-right" style="width:100px">
+                            <button class="btn btn-warning m-b font-bold block full-width" type="submit">Approve</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <form id="denyForm" action="../oauth/authorize" method="post">
+                        <input type="hidden" name="user_oauth_approval" value="false"/>
+                        <input type="hidden" id="csrf_token" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <div class="pull-left" style="width:100px">
+                            <button class="btn btn-danger m-b font-bold block full-width" type="submit">Deny</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Mainly scripts -->
+        <script th:src="@{../content/js/jquery/jquery-3.1.1.min.js}"></script>
+        <script th:src="@{../content/js/bootstrap/bootstrap.min.js}"></script>
+        
+        <script type="text/javascript">
+            $.get("../open-api/profile-info", function(result){
+                if(result.ribbonEnv) {
+                    $('div.ribbon').removeClass('hidden').find('a').text(result.ribbonEnv.toUpperCase());
+                }
+            });
+        </script>
+    </body>
+</html>
