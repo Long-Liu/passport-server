@@ -22,7 +22,7 @@ public class MonitoredApp extends AbstractAuditableDomain implements Serializabl
 
     private ResponsiblePerson responsiblePerson;
 
-    private HealthState healthState;
+    private String healthState;
 
     public MonitoredApp() {
     }
@@ -57,11 +57,11 @@ public class MonitoredApp extends AbstractAuditableDomain implements Serializabl
         this.responsiblePerson = responsiblePerson;
     }
 
-    public HealthState getHealthState() {
+    public String getHealthState() {
         return healthState;
     }
 
-    public void setHealthState(HealthState healthState) {
+    public void setHealthState(String healthState) {
         this.healthState = healthState;
     }
 

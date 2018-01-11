@@ -17,7 +17,7 @@ public class Node extends AbstractAuditableDomain implements Serializable {
 
     private String healthContextPath;
 
-    private HealthState healthState;
+    private String healthState;
 
     public Node() {
     }
@@ -52,11 +52,11 @@ public class Node extends AbstractAuditableDomain implements Serializable {
         this.healthContextPath = healthContextPath;
     }
 
-    public HealthState getHealthState() {
+    public String getHealthState() {
         return healthState;
     }
 
-    public void setHealthState(HealthState healthState) {
+    public void setHealthState(String healthState) {
         this.healthState = healthState;
     }
 
