@@ -34,6 +34,7 @@ angular
     .factory('DictItemService', DictItemService)
     .factory('AuditsService', AuditsService)
     .factory('LogsService', LogsService)
+    .factory('AppConfigService', AppConfigService)
     .factory('AppMonitorService', AppMonitorService);
 
 /**
@@ -1184,6 +1185,14 @@ function LogsService($resource) {
 function AppMonitorService($resource) {
     return $resource('api/monitoredApps', {}, {
         'findAll': {method: 'GET', isArray: true},
+        'changeLevel': {method: 'PUT'}
+    });
+}
+
+function AppConfigService($resource) {
+    return $resource('api/appConfig/:name', {}, {
+        'findAll': {method: 'GET', isArray: true, param: {name:''}},
+        'findByName': {method: 'GET', isArray: true},
         'changeLevel': {method: 'PUT'}
     });
 }

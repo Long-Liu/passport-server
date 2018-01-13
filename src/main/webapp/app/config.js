@@ -730,6 +730,24 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }]
             }
         })
+        .state('app.app-config.view', {
+            url: '/view/{name}',
+            views: {
+                'content@': {
+                    templateUrl: 'app/views/admin/app/appConfig-details.html',
+                    controller: 'AppConfigController',
+                    controllerAs: 'vm'
+                }
+            },
+            data: {
+                pageTitle: '查看受监控应用信息'
+            },
+            resolve: {
+                entity: ['AppConfigService', '$stateParams', function(AppConfigService, $stateParams) {
+                    return AppConfigService.findAll({name: $stateParams.name}).$promise;
+                }]
+            }
+        })
         .state('app.app-authority-list', {
             url: "/app-authority-list?page&sort&appName&authorityName",
             views: {

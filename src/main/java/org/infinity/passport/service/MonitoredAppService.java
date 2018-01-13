@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface MonitoredAppService {
     List<MonitoredApp> findAll();
+
+    List<MonitoredApp> findAllWithoutQuest();
 }

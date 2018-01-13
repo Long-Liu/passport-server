@@ -616,43 +616,33 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
     }
 };
 
-function AppConfigController($state, $stateParams/*, $uibModalInstance*//*, AppService, AccountService*/) {
+function AppConfigController($state, ParseLinksUtils, pagingParams, AppConfigService) {
     var vm = this;
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.mode = $state.current.data.mode;
-    // vm.authorities = AccountService.queryAuthorityNames({ enabled: true});
-    vm.entity = {};
     vm.isSaving = false;
-    // vm.save = save;
-    // vm.cancel = cancel;
-    if (vm.mode === 'create') {
-        vm.entity = {
-            name: null,
-            enabled: true
-        };
+    vm.entity = AppConfigService.findAll();
+    function findAll() {
+        AppConfigService.findAll({
+            page: pagingParams.page - 1,
+            size: vm.itemsPerPage,
+            sort: sort()
+        }, function (result, headers) {
+            vm.links = ParseLinksUtils.parse(headers('link'));
+            vm.totalItems = headers('X-Total-Count');
+            vm.page = pagingParams.page;
+        });
     }
-    // else {
-    //     // vm.entity = AppService.get({name : $stateParams.name});
-    // }
-    // function save () {
-    //     vm.isSaving = true;
-    //     if (vm.mode == 'edit') {
-    //         // AppService.update(vm.entity, onSaveSuccess, onSaveError);
-    //     } else {
-    //         // AppService.save(vm.entity, onSaveSuccess, onSaveError);
-    //     }
-    // }
-    // function onSaveSuccess (result) {
-    //     vm.isSaving = false;
-    //     $uibModalInstance.close(result);
-    // }
-    // function onSaveError (result) {
-    //     vm.isSaving = false;
-    // }
-    // function cancel () {
-    //     $uibModalInstance.dismiss('cancel');
-    // }
+
+    function sort() {
+        var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
+        if (vm.predicate !== 'name') {
+            // default sort column
+            result.push('name,asc');
+        }
+        return result;
+    }
 }
 
 function AppMonitorController($state, AppMonitorService) {

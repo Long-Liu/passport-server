@@ -57,6 +57,11 @@ public class MonitoredAppServiceImpl implements MonitoredAppService {
         return all;
     }
 
+    @Override
+    public List<MonitoredApp> findAllWithoutQuest() {
+        return mongoTemplate.findAll(MonitoredApp.class);
+    }
+
     private String getNodeStatus(Node node) {
         ResponseEntity<String> entity = restTemplate.getForEntity("http://" + node.getServerAddress() + ":"
                 + node.getPort() + node.getHealthContextPath(), String.class);
