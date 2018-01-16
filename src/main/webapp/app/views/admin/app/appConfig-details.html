@@ -32,19 +32,19 @@
                         <tbody>
                         <tr>
                             <td>应用名称:</td>
-                            <td>{{vm.entity.name}}</td>
+                            <td>{{vm.entity.appName}}</td>
                         </tr>
                         <tr>
-                            <td>应用权限:</td>
-                            <td>
-                                <ul class="list-unstyled">
-                                    <li ng-repeat="authority in vm.entity.authorities"><span>{{authority}}</span></li>
-                                </ul>
-                            </td>
+                            <td>负责人邮箱:</td>
+                            <td>{{vm.entity.responsiblePerson.email}}</td>
                         </tr>
                         <tr>
-                            <td>是否可用:</td>
-                            <td>{{vm.entity.enabled}}</td>
+                            <td>节点:</td>
+                            <td>{{vm.entity.nodes}}</td>
+                        </tr>
+                        <tr>
+                            <td>修改时间:</td>
+                            <td>{{vm.entity.modifiedTime}}</td>
                         </tr>
                         </tbody>
                     </table>

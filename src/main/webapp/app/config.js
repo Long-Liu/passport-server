@@ -731,7 +731,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }
         })
         .state('app.app-config.view', {
-            url: '/view/{name}',
+            url: '/view/{appName}',
             views: {
                 'content@': {
                     templateUrl: 'app/views/admin/app/appConfig-details.html',
@@ -744,7 +744,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             },
             resolve: {
                 entity: ['AppConfigService', '$stateParams', function(AppConfigService, $stateParams) {
-                    return AppConfigService.findAll({name: $stateParams.name}).$promise;
+                    return AppConfigService.get({appName: $stateParams.appName}).$promise;
                 }]
             }
         })

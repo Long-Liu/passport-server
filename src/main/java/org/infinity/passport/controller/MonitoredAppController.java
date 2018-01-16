@@ -3,6 +3,7 @@ package org.infinity.passport.controller;
 import org.infinity.passport.domain.MonitoredApp;
 import org.infinity.passport.service.MonitoredAppService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,9 +15,13 @@ public class MonitoredAppController {
 
     private final MonitoredAppService monitoredAppService;
 
+    private final MongoTemplate mongoTemplate;
+
     @Autowired
-    public MonitoredAppController(MonitoredAppService monitoredAppService) {
+    public MonitoredAppController(MonitoredAppService monitoredAppService,
+                                  MongoTemplate mongoTemplate) {
         this.monitoredAppService = monitoredAppService;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @GetMapping("api/monitoredApps")
@@ -29,9 +34,8 @@ public class MonitoredAppController {
        return monitoredAppService.findAllWithoutQuest();
     }
 
-    @GetMapping("api/appConfig/{name}")
-    public List<MonitoredApp> loadApps(@PathVariable(value = "name") String name) {
-
-        return monitoredAppService.findAllWithoutQuest();
+    @GetMapping("api/appConfig/{appName}")
+    public MonitoredApp loadApps(@PathVariable(value = "appName") String appName) {
+        return mongoTemplate.findById(appName, MonitoredApp.class);
     }
 }

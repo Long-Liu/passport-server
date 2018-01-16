@@ -616,13 +616,13 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
     }
 };
 
-function AppConfigController($state, ParseLinksUtils, pagingParams, AppConfigService) {
+function AppConfigController($state,entity, ParseLinksUtils, pagingParams, AppConfigService) {
     var vm = this;
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.mode = $state.current.data.mode;
     vm.isSaving = false;
-    vm.entity = AppConfigService.findAll();
+    vm.entity = entity;
     function findAll() {
         AppConfigService.findAll({
             page: pagingParams.page - 1,
@@ -632,6 +632,7 @@ function AppConfigController($state, ParseLinksUtils, pagingParams, AppConfigSer
             vm.links = ParseLinksUtils.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
             vm.page = pagingParams.page;
+            vm.entity = result;
         });
     }
 

@@ -1190,10 +1190,14 @@ function AppMonitorService($resource) {
 }
 
 function AppConfigService($resource) {
-    return $resource('api/appConfig/:name', {}, {
-        'findAll': {method: 'GET', isArray: true, param: {name:''}},
-        'findByName': {method: 'GET', isArray: true},
-        'changeLevel': {method: 'PUT'}
+    return $resource('api/appConfig/:appName', {}, {
+        'findAll': {method: 'GET', isArray: true, params: {appName: ''}},
+        'get': {
+            method: 'GET'
+        },
+        'save': {method: 'POST', params: {extension: 'menus'}},
+        'update': {method: 'PUT', params: {extension: 'menus'}},
+        'del': {method: 'DELETE', params: {extension: 'menus'}}
     });
 }
 
