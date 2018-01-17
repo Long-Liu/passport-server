@@ -36,6 +36,8 @@ angular
     .factory('LogsService', LogsService)
     .factory('AppConfigService', AppConfigService)
     .factory('AppConfigEditService', AppConfigEditService)
+    .factory('AppConfigTestService', AppConfigTestService)
+    .factory('AppConfigCreateService', AppConfigCreateService)
     .factory('AppMonitorService', AppMonitorService);
 
 /**
@@ -1193,31 +1195,45 @@ function AppMonitorService($resource) {
 function AppConfigService($filter, $http, $resource) {
     var service = $resource('api/appConfig/:appName', {}, {
         'get': {method: 'GET', isArray: true},
-        'findByName': {
-            method: 'GET'
-        }
+        'findByName': {method: 'GET'},
+        'removeOne': {method: 'DELETE', isArray: false}
     });
 
     return service;
 }
 
-function AppConfigEditService($http, $resource) {
+function AppConfigTestService($http) {
+    return {
+        removeOne: removeOne
+    };
 
-    // var service = $resource("api/appConfig/", {}, {
-    //     'save': {method: 'POST'}
-    // });
-    //
-    // return service;
-    //
+    function removeOne(appName) {
+        $http.delete('api/appConfig/' + appName);
+    }
+}
+
+function AppConfigCreateService($http) {
+    return {
+        insertOne: insertOne
+    };
+
+    function insertOne(data) {
+        $http.put('api/appConfig/',data,{
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(result,header) {
+
+        });
+    }
+}
+
+function AppConfigEditService($http) {
     return {
         save: save
     };
     function save(data) {
-        // console.log(appName);
-        // console.log(monitoredApp);
-        // var data = {"appName": appName, "monitoredApp": monitoredApp};
-        // console.log(angular.toJson(data));
-        return $http.post('api/appConfig',data , {
+        return $http.post('api/appConfig', data, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -1226,7 +1242,6 @@ function AppConfigEditService($http, $resource) {
         }).error(function (data) {
             console.log(data);
         });
-
     }
 
 }

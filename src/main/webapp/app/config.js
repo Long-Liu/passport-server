@@ -1249,6 +1249,42 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 });
             }]
         })
+        .state('app.app-config.create', {
+            url: '/create/{appName}',
+            data: {
+                pageTitle: '创建应用配置信息',
+                mode: 'edit'
+            },
+            onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/views/admin/app/app-config-create.html',
+                    controller: 'AppConfigCreateController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: {
+                            /*clientId: null,
+                            resourceIds: null,
+                            clientSecret: null,
+                            scope: null,
+                            authorizedGrantTypes: 'authorization_code,password,refresh_token',
+                            webServerRedirectUri: null,
+                            authorities: null,
+                            accessTokenValidity: null,
+                            refreshTokenValidity: null,
+                            additionalInformation: '{}',
+                            autoapprove: true*/
+                        }
+                    }
+                }).result.then(function (result) {
+                    $state.go('^', null, {reload: true});
+                }, function () {
+                    $state.go('^');
+                });
+            }]
+        })
+
 };
 
 function paginationConfig(uibPaginationConfig, PAGINATION_CONSTANTS) {

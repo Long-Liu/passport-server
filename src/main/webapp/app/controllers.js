@@ -51,6 +51,7 @@ angular
     .controller('RedisAdminController', RedisAdminController)
     .controller('AppConfigViewController', AppConfigViewController)
     .controller('AppConfigEditController', AppConfigEditController)
+    .controller('AppConfigCreateController', AppConfigCreateController)
     .controller('ControlController', ControlController);
 
 /**
@@ -618,7 +619,7 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
     }
 };
 
-function AppConfigController($state, ParseLinksUtils, pagingParams, AppConfigService) {
+function AppConfigController($state, ParseLinksUtils, pagingParams, AppConfigService,AppConfigTestService) {
     var vm = this;
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
@@ -628,6 +629,13 @@ function AppConfigController($state, ParseLinksUtils, pagingParams, AppConfigSer
     vm.findAll = findAll;
     vm.findByName = findByName;
     vm.findAll();
+
+
+    vm.removeOne=removeOne;
+
+    function removeOne(appName) {
+        AppConfigTestService.removeOne(appName);
+    }
 
     function findAll() {
         AppConfigService.get({}, function (result, header) {
@@ -676,8 +684,29 @@ function AppConfigEditController($state, $uibModalInstance, entity, AppConfigEdi
     function save() {
         vm.isSaving = true;
         var data = angular.toJson({"appName": vm.appName, "monitoredApp": vm.entity});
-        console.log(data);
         AppConfigEditService.save(data);
+        $uibModalInstance.dismiss('cancel');
+    }
+
+    function cancel() {
+        $uibModalInstance.dismiss('cancel');
+    }
+}
+
+function AppConfigCreateController($state, $uibModalInstance, AppConfigCreateService,entity) {
+    var vm = this;
+    vm.pageTitle = $state.current.data.pageTitle;
+    vm.parentPageTitle = $state.$current.parent.data.pageTitle;
+    vm.mode = $state.current.data.mode;
+    vm.entity = entity;
+    vm.isSaving = false;
+    vm.cancel = cancel;
+    vm.insertOne = insertOne;
+
+    function insertOne() {
+        vm.isSaving = true;
+        var data = angular.toJson(vm.entity);
+        AppConfigCreateService.insertOne(data);
         $uibModalInstance.dismiss('cancel');
     }
 
