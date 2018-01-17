@@ -49,6 +49,7 @@ angular
     .controller('DictItemDialogController', DictItemDialogController)
     .controller('LogsController', LogsController)
     .controller('RedisAdminController', RedisAdminController)
+    .controller('AppConfigViewController', AppConfigViewController)
     .controller('ControlController', ControlController);
 
 /**
@@ -616,34 +617,36 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
     }
 };
 
-function AppConfigController($state,entity, ParseLinksUtils, pagingParams, AppConfigService) {
+function AppConfigController($state, ParseLinksUtils, pagingParams, AppConfigService) {
+    var vm = this;
+    vm.pageTitle = $state.current.data.pageTitle;
+    vm.parentPageTitle = $state.$current.parent.data.pageTitle;
+    vm.mode = $state.current.data.mode;
+    vm.isSaving = false;
+    vm.entity = [];
+    vm.findAll = findAll;
+    vm.findByName = findByName;
+    vm.findAll();
+
+    function findAll() {
+        AppConfigService.get({}, function (result, header) {
+            vm.entity = result;
+        });
+    }
+
+    function findByName(appName) {
+        vm.entity = AppConfigService.findByName(appName);
+    }
+}
+
+function AppConfigViewController($state, entity) {
     var vm = this;
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.mode = $state.current.data.mode;
     vm.isSaving = false;
     vm.entity = entity;
-    function findAll() {
-        AppConfigService.findAll({
-            page: pagingParams.page - 1,
-            size: vm.itemsPerPage,
-            sort: sort()
-        }, function (result, headers) {
-            vm.links = ParseLinksUtils.parse(headers('link'));
-            vm.totalItems = headers('X-Total-Count');
-            vm.page = pagingParams.page;
-            vm.entity = result;
-        });
-    }
 
-    function sort() {
-        var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-        if (vm.predicate !== 'name') {
-            // default sort column
-            result.push('name,asc');
-        }
-        return result;
-    }
 }
 
 function AppMonitorController($state, AppMonitorService) {

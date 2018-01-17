@@ -4,6 +4,8 @@ import org.infinity.passport.domain.MonitoredApp;
 import org.infinity.passport.service.MonitoredAppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,11 +33,14 @@ public class MonitoredAppController {
 
     @GetMapping("api/appConfig")
     public List<MonitoredApp> loadApps() {
-       return monitoredAppService.findAllWithoutQuest();
+        List<MonitoredApp> all = mongoTemplate.findAll(MonitoredApp.class);
+        all.forEach(System.out::println);
+        return mongoTemplate.findAll(MonitoredApp.class);
     }
 
     @GetMapping("api/appConfig/{appName}")
     public MonitoredApp loadApps(@PathVariable(value = "appName") String appName) {
-        return mongoTemplate.findById(appName, MonitoredApp.class);
+        Query query=Query.query(Criteria.where("appName").is(appName));
+        return mongoTemplate.findOne(query, MonitoredApp.class);
     }
 }

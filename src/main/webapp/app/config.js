@@ -12,7 +12,7 @@ angular
     .config(httpConfig)
     .config(localStorageConfig)
     .config(compileServiceConfig)
-    .run(function($rootScope, $state) {
+    .run(function ($rootScope, $state) {
         $rootScope.$state = $state;
     });
 
@@ -52,7 +52,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                         {
                             serie: true,
                             name: 'angular-flot',
-                            files: [ 'content/js/plugins/flot/jquery.flot.js', 'content/js/plugins/flot/jquery.flot.time.js', 'content/js/plugins/flot/jquery.flot.tooltip.min.js', 'content/js/plugins/flot/jquery.flot.spline.js', 'content/js/plugins/flot/jquery.flot.resize.js', 'content/js/plugins/flot/jquery.flot.pie.js', 'content/js/plugins/flot/curvedLines.js', 'content/js/plugins/flot/angular-flot.js', ]
+                            files: ['content/js/plugins/flot/jquery.flot.js', 'content/js/plugins/flot/jquery.flot.time.js', 'content/js/plugins/flot/jquery.flot.tooltip.min.js', 'content/js/plugins/flot/jquery.flot.spline.js', 'content/js/plugins/flot/jquery.flot.resize.js', 'content/js/plugins/flot/jquery.flot.pie.js', 'content/js/plugins/flot/curvedLines.js', 'content/js/plugins/flot/angular-flot.js',]
                         },
                         {
                             name: 'angular-peity',
@@ -99,7 +99,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             controller: 'LoginController',
             controllerAs: 'vm',
             data: {
-                pageTitle: '登录', 
+                pageTitle: '登录',
                 specialClass: 'gray-bg login-background-img'
             }
         })
@@ -223,7 +223,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: 'Metrics'
             },
             resolve: {
-                metrics: ['MetricsService', function(MetricsService) {
+                metrics: ['MetricsService', function (MetricsService) {
                     return MetricsService.getMetrics();
                 }]
             }
@@ -357,7 +357,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '新建数据字典信息',
                 mode: 'create'
             },
-            onEnter: ['$state', '$uibModal', function($state, $uibModal) {
+            onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/developer/dict/dict-dialog.html',
                     controller: 'DictDialogController',
@@ -373,9 +373,9 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                             enabled: true
                         }
                     }
-                }).result.then(function() {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function () {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -386,7 +386,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '编辑数据字典信息',
                 mode: 'edit'
             },
-            onEnter: ['$state', '$stateParams', '$uibModal', function($state, $stateParams, $uibModal) {
+            onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/developer/dict/dict-dialog.html',
                     controller: 'DictDialogController',
@@ -394,13 +394,13 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['DictService', function(DictService) {
-                            return DictService.get({id : $stateParams.id}).$promise;
+                        entity: ['DictService', function (DictService) {
+                            return DictService.get({id: $stateParams.id}).$promise;
                         }]
                     }
-                }).result.then(function(result) {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function (result) {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -451,7 +451,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '新建数据字典项信息',
                 mode: 'create'
             },
-            onEnter: ['$state', '$uibModal', function($state, $uibModal) {
+            onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/developer/dict-item/dict-item-dialog.html',
                     controller: 'DictItemDialogController',
@@ -468,9 +468,9 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                             enabled: true
                         }
                     }
-                }).result.then(function() {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function () {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -481,7 +481,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '编辑数据字典项信息',
                 mode: 'edit'
             },
-            onEnter: ['$state', '$stateParams', '$uibModal', function($state, $stateParams, $uibModal) {
+            onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/developer/dict-item/dict-item-dialog.html',
                     controller: 'DictItemDialogController',
@@ -489,13 +489,13 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['DictItemService', function(DictItemService) {
-                            return DictItemService.get({id : $stateParams.id}).$promise;
+                        entity: ['DictItemService', function (DictItemService) {
+                            return DictItemService.get({id: $stateParams.id}).$promise;
                         }]
                     }
-                }).result.then(function(result) {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function (result) {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -588,8 +588,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     };
                 }],
                 criteria: ['$stateParams', function ($stateParams) {
-                    return {
-                    };
+                    return {};
                 }]
             }
         })
@@ -625,8 +624,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     };
                 }],
                 criteria: ['$stateParams', function ($stateParams) {
-                    return {
-                    };
+                    return {};
                 }]
             }
         })
@@ -662,8 +660,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     };
                 }],
                 criteria: ['$stateParams', function ($stateParams) {
-                    return {
-                    };
+                    return {};
                 }]
             }
         })
@@ -673,16 +670,16 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '新建应用信息',
                 mode: 'create'
             },
-            onEnter: ['$state', '$uibModal', function($state, $uibModal) {
+            onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/admin/app/app-dialog.html',
                     controller: 'AppDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg'
-                }).result.then(function() {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function () {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -693,7 +690,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '编辑应用信息',
                 mode: 'edit'
             },
-            onEnter: ['$state', '$stateParams', '$uibModal', function($state, $stateParams, $uibModal) {
+            onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/admin/app/app-dialog.html',
                     controller: 'AppDialogController',
@@ -701,13 +698,13 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['AppService', function(AppService) {
-                            return AppService.get({name : $stateParams.name}).$promise;
+                        entity: ['AppService', function (AppService) {
+                            return AppService.get({name: $stateParams.name}).$promise;
                         }]
                     }
-                }).result.then(function(result) {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function (result) {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -725,7 +722,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '查看应用信息'
             },
             resolve: {
-                entity: ['AppService', '$stateParams', function(AppService, $stateParams) {
+                entity: ['AppService', '$stateParams', function (AppService, $stateParams) {
                     return AppService.get({name: $stateParams.name}).$promise;
                 }]
             }
@@ -735,7 +732,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             views: {
                 'content@': {
                     templateUrl: 'app/views/admin/app/appConfig-details.html',
-                    controller: 'AppConfigController',
+                    controller: 'AppConfigViewController',
                     controllerAs: 'vm'
                 }
             },
@@ -743,8 +740,8 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '查看受监控应用信息'
             },
             resolve: {
-                entity: ['AppConfigService', '$stateParams', function(AppConfigService, $stateParams) {
-                    return AppConfigService.get({appName: $stateParams.appName}).$promise;
+                entity: ['AppConfigService', '$stateParams', function (AppConfigService, $stateParams) {
+                    return AppConfigService.findByName({appName: $stateParams.appName}).$promise;
                 }]
             }
         })
@@ -793,16 +790,16 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '新建应用权限信息',
                 mode: 'create'
             },
-            onEnter: ['$state', '$uibModal', function($state, $uibModal) {
+            onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/admin/app-authority/app-authority-dialog.html',
                     controller: 'AppAuthorityDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg'
-                }).result.then(function() {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function () {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -846,8 +843,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     };
                 }],
                 criteria: ['$stateParams', function ($stateParams) {
-                    return {
-                    };
+                    return {};
                 }]
             }
         })
@@ -857,16 +853,16 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '新建权限信息',
                 mode: 'create'
             },
-            onEnter: ['$state', '$uibModal', function($state, $uibModal) {
+            onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/admin/authority/authority-dialog.html',
                     controller: 'AuthorityDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg'
-                }).result.then(function() {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function () {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -915,7 +911,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '新建用户信息',
                 mode: 'create'
             },
-            onEnter: ['$state', '$uibModal', function($state, $uibModal) {
+            onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/admin/user/user-dialog.html',
                     controller: 'UserDialogController',
@@ -939,9 +935,9 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                             resetKey: null
                         }
                     }
-                }).result.then(function() {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function () {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -952,7 +948,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '编辑用户信息',
                 mode: 'edit'
             },
-            onEnter: ['$state', '$stateParams', '$uibModal', function($state, $stateParams, $uibModal) {
+            onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/admin/user/user-dialog.html',
                     controller: 'UserDialogController',
@@ -960,13 +956,13 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['UserService', function(UserService) {
-                            return UserService.get({userName : $stateParams.userName}).$promise;
+                        entity: ['UserService', function (UserService) {
+                            return UserService.get({userName: $stateParams.userName}).$promise;
                         }]
                     }
-                }).result.then(function(result) {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function (result) {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -984,7 +980,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '查看用户信息'
             },
             resolve: {
-                entity: ['UserService', '$stateParams', function(UserService, $stateParams) {
+                entity: ['UserService', '$stateParams', function (UserService, $stateParams) {
                     return UserService.get({userName: $stateParams.userName}).$promise;
                 }]
             }
@@ -1040,7 +1036,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '新建单点登录客户端信息',
                 mode: 'create'
             },
-            onEnter: ['$state', '$uibModal', function($state, $uibModal) {
+            onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/admin/oauth-client/oauth-client-dialog.html',
                     controller: 'OauthClientDialogController',
@@ -1062,9 +1058,9 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                             autoapprove: true
                         }
                     }
-                }).result.then(function() {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function () {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -1075,7 +1071,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '编辑单点登录客户端信息',
                 mode: 'edit'
             },
-            onEnter: ['$state', '$stateParams', '$uibModal', function($state, $stateParams, $uibModal) {
+            onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/admin/oauth-client/oauth-client-dialog.html',
                     controller: 'OauthClientDialogController',
@@ -1083,13 +1079,13 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['OauthClientService', function(OauthClientService) {
-                            return OauthClientService.get({clientId : $stateParams.id}).$promise;
+                        entity: ['OauthClientService', function (OauthClientService) {
+                            return OauthClientService.get({clientId: $stateParams.id}).$promise;
                         }]
                     }
-                }).result.then(function(result) {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function (result) {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -1107,8 +1103,8 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '查看单点登录客户端信息'
             },
             resolve: {
-                entity: ['OauthClientService', '$stateParams', function(OauthClientService, $stateParams) {
-                    return OauthClientService.get({clientId : $stateParams.id}).$promise;
+                entity: ['OauthClientService', '$stateParams', function (OauthClientService, $stateParams) {
+                    return OauthClientService.get({clientId: $stateParams.id}).$promise;
                 }]
             }
         })
@@ -1163,7 +1159,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '新建管理菜单信息',
                 mode: 'create'
             },
-            onEnter: ['$state', '$uibModal', function($state, $uibModal) {
+            onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/admin/admin-menu/admin-menu-dialog.html',
                     controller: 'AdminMenuDialogController',
@@ -1182,9 +1178,9 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                             appName: null
                         }
                     }
-                }).result.then(function() {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function () {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -1195,7 +1191,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '编辑管理菜单信息',
                 mode: 'edit'
             },
-            onEnter: ['$state', '$stateParams', '$uibModal', function($state, $stateParams, $uibModal) {
+            onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/views/admin/admin-menu/admin-menu-dialog.html',
                     controller: 'AdminMenuDialogController',
@@ -1203,13 +1199,13 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['AdminMenuService', function(AdminMenuService) {
-                            return AdminMenuService.get({id : $stateParams.id}).$promise;
+                        entity: ['AdminMenuService', function (AdminMenuService) {
+                            return AdminMenuService.get({id: $stateParams.id}).$promise;
                         }]
                     }
-                }).result.then(function(result) {
-                    $state.go('^', null, { reload: true });
-                }, function() {
+                }).result.then(function (result) {
+                    $state.go('^', null, {reload: true});
+                }, function () {
                     $state.go('^');
                 });
             }]
@@ -1226,8 +1222,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             data: {
                 pageTitle: '权限管理菜单'
             },
-            resolve: {
-            }
+            resolve: {}
         });
 };
 
@@ -1250,18 +1245,26 @@ function pagerConfig(uibPagerConfig, PAGINATION_CONSTANTS) {
 function httpConfig($urlRouterProvider, $httpProvider, httpRequestInterceptorCacheBusterProvider, $urlMatcherFactoryProvider) {
     //Cache everything except rest api requests
     httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/], true);
-    
+
     $httpProvider.interceptors.push('alertErrorHandlerInterceptor');
     $httpProvider.interceptors.push('authExpiredInterceptor');
     $httpProvider.interceptors.push('authInterceptor');
     $httpProvider.interceptors.push('alertHandlerInterceptor');
 
     $urlMatcherFactoryProvider.type('boolean', {
-        name : 'boolean',
-        decode: function(val) { return val === true || val === 'true'; },
-        encode: function(val) { return val ? 1 : 0; },
-        equals: function(a, b) { return this.is(a) && a === b; },
-        is: function(val) { return [true,false,0,1].indexOf(val) >= 0; },
+        name: 'boolean',
+        decode: function (val) {
+            return val === true || val === 'true';
+        },
+        encode: function (val) {
+            return val ? 1 : 0;
+        },
+        equals: function (a, b) {
+            return this.is(a) && a === b;
+        },
+        is: function (val) {
+            return [true, false, 0, 1].indexOf(val) >= 0;
+        },
         pattern: /bool|true|0|1/
     });
 };
@@ -1271,10 +1274,10 @@ function localStorageConfig($localStorageProvider, $sessionStorageProvider) {
     $sessionStorageProvider.setKeyPrefix('app-');
 };
 
-function compileServiceConfig($compileProvider,DEBUG_INFO_ENABLED) {
+function compileServiceConfig($compileProvider, DEBUG_INFO_ENABLED) {
     // disable debug data on prod profile to improve performance
     $compileProvider.debugInfoEnabled(DEBUG_INFO_ENABLED);
-    
+
     /*
     If you wish to debug an application with this information
     then you should open up a debug console in the browser

@@ -1189,15 +1189,14 @@ function AppMonitorService($resource) {
     });
 }
 
-function AppConfigService($resource) {
-    return $resource('api/appConfig/:appName', {}, {
-        'findAll': {method: 'GET', isArray: true, params: {appName: ''}},
-        'get': {
+function AppConfigService($filter, $http,$resource) {
+    var service = $resource('api/appConfig/:appName', {}, {
+        'get': {method: 'GET', isArray: true},
+        'findByName': {
             method: 'GET'
-        },
-        'save': {method: 'POST', params: {extension: 'menus'}},
-        'update': {method: 'PUT', params: {extension: 'menus'}},
-        'del': {method: 'DELETE', params: {extension: 'menus'}}
+        }
     });
+
+    return service;
 }
 

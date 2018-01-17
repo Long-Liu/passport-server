@@ -40,7 +40,13 @@
                         </tr>
                         <tr>
                             <td>节点:</td>
-                            <td>{{vm.entity.nodes}}</td>
+                            <td>
+                                <ul>
+                                    <li ng-repeat="o in vm.entity.nodes">
+                                        {{o.serverAddress}}
+                                    </li>
+                                </ul>
+                            </td>
                         </tr>
                         <tr>
                             <td>修改时间:</td>
