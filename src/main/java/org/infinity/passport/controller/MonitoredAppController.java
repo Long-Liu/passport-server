@@ -91,6 +91,5 @@ public class MonitoredAppController {
                 mongoTemplate.insert(appToInsert);
             }
         }
-        System.out.println(map);
     }
 }
