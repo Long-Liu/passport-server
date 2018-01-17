@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 public class MonitoredAppController {
@@ -40,7 +41,20 @@ public class MonitoredAppController {
 
     @GetMapping("api/appConfig/{appName}")
     public MonitoredApp loadApps(@PathVariable(value = "appName") String appName) {
-        Query query=Query.query(Criteria.where("appName").is(appName));
+        Query query = Query.query(Criteria.where("appName").is(appName));
         return mongoTemplate.findOne(query, MonitoredApp.class);
     }
+
+    @PostMapping("api/appConfig")
+    public void updateApps(@RequestBody Map<String,Object> map) {
+        if (Objects.nonNull(map)) {
+            Query query = Query.query(Criteria.where("appName").is(map.get("appName")));
+            MonitoredApp app = mongoTemplate.findOne(query, MonitoredApp.class);
+            if (Objects.nonNull(app)) {
+                mongoTemplate.remove(query, MonitoredApp.class);
+                mongoTemplate.insert(map.get("monitoredApp"),"MonitoredApp");
+            }
+        }
+    }
+
 }

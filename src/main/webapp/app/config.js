@@ -1161,7 +1161,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             },
             onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/views/admin/admin-menu/admin-menu-dialog.html',
+                    templateUrl: 'app/views/admin/admin-menu/app-config-edit.html',
                     controller: 'AdminMenuDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -1193,7 +1193,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             },
             onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/views/admin/admin-menu/admin-menu-dialog.html',
+                    templateUrl: 'app/views/admin/admin-menu/app-config-edit.html',
                     controller: 'AdminMenuDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -1223,7 +1223,32 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: '权限管理菜单'
             },
             resolve: {}
-        });
+        })
+        .state('app.app-config.edit', {
+            url: '/edit/{appName}',
+            data: {
+                pageTitle: '编辑应用配置信息',
+                mode: 'edit'
+            },
+            onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/views/admin/app/app-config-edit.html',
+                    controller: 'AppConfigEditController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['AppConfigService', function (AppConfigService) {
+                            return AppConfigService.findByName({appName: $stateParams.appName}).$promise;
+                        }]
+                    }
+                }).result.then(function (result) {
+                    $state.go('^', null, {reload: true});
+                }, function () {
+                    $state.go('^');
+                });
+            }]
+        })
 };
 
 function paginationConfig(uibPaginationConfig, PAGINATION_CONSTANTS) {

@@ -39,11 +39,11 @@
                             <td>{{vm.entity.responsiblePerson.email}}</td>
                         </tr>
                         <tr>
-                            <td>节点:</td>
+                            <td>节点URL:</td>
                             <td>
                                 <ul>
                                     <li ng-repeat="o in vm.entity.nodes">
-                                        {{o.serverAddress}}
+                                        {{o.serverAddress}}:{{o.port}}{{o.healthContextPath}}
                                     </li>
                                 </ul>
                             </td>

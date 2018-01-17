@@ -35,6 +35,7 @@ angular
     .factory('AuditsService', AuditsService)
     .factory('LogsService', LogsService)
     .factory('AppConfigService', AppConfigService)
+    .factory('AppConfigEditService', AppConfigEditService)
     .factory('AppMonitorService', AppMonitorService);
 
 /**
@@ -1189,7 +1190,7 @@ function AppMonitorService($resource) {
     });
 }
 
-function AppConfigService($filter, $http,$resource) {
+function AppConfigService($filter, $http, $resource) {
     var service = $resource('api/appConfig/:appName', {}, {
         'get': {method: 'GET', isArray: true},
         'findByName': {
@@ -1198,5 +1199,35 @@ function AppConfigService($filter, $http,$resource) {
     });
 
     return service;
+}
+
+function AppConfigEditService($http, $resource) {
+
+    // var service = $resource("api/appConfig/", {}, {
+    //     'save': {method: 'POST'}
+    // });
+    //
+    // return service;
+    //
+    return {
+        save: save
+    };
+    function save(data) {
+        // console.log(appName);
+        // console.log(monitoredApp);
+        // var data = {"appName": appName, "monitoredApp": monitoredApp};
+        // console.log(angular.toJson(data));
+        return $http.post('api/appConfig',data , {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).success(function (data) {
+            console.log(data);
+        }).error(function (data) {
+            console.log(data);
+        });
+
+    }
+
 }
 

@@ -28,7 +28,7 @@
                         <tr sort-directive="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                             <th sort-by-directive="userName"><span>应用名称</span> <span class="fa fa-sort"></span></th>
                             <th sort-by-directive="email"><span>负责人邮箱</span> <span class="fa fa-sort"></span></th>
-                            <th sort-by-directive="activated"><span>节点</span> <span class="fa fa-sort"></span></th>
+                            <th sort-by-directive="activated"><span>节点URL</span> <span class="fa fa-sort"></span></th>
                             <th sort-by-directive="modifiedTime"><span>修改时间</span> <span class="fa fa-sort"></span></th>
                             <th>操作</th>
                         </tr>
@@ -39,7 +39,7 @@
                             <td>{{e.responsiblePerson.email}}</td>
                             <td>
                                 <select >
-                                    <option ng-repeat="n in e.nodes">{{n.serverAddress}}</option>
+                                    <option ng-repeat="o in e.nodes">{{o.serverAddress}}:{{o.port}}{{o.healthContextPath}}</option>
                                 </select>
                             </td>
                             <td>{{e.modifiedTime | date:'yyyy/MM/dd HH:mm:ss'}}</td>

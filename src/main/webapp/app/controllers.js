@@ -50,6 +50,7 @@ angular
     .controller('LogsController', LogsController)
     .controller('RedisAdminController', RedisAdminController)
     .controller('AppConfigViewController', AppConfigViewController)
+    .controller('AppConfigEditController', AppConfigEditController)
     .controller('ControlController', ControlController);
 
 /**
@@ -658,6 +659,30 @@ function AppMonitorController($state, AppMonitorService) {
     vm.isSaving = false;
     vm.findAll = function findAll() {
         vm.entity = AppMonitorService.findAll();
+    }
+}
+
+function AppConfigEditController($state, $uibModalInstance, entity, AppConfigEditService) {
+    var vm = this;
+    vm.pageTitle = $state.current.data.pageTitle;
+    vm.parentPageTitle = $state.$current.parent.data.pageTitle;
+    vm.mode = $state.current.data.mode;
+    vm.entity = entity;
+    vm.isSaving = false;
+    vm.cancel = cancel;
+    vm.save = save;
+    vm.appName = entity.appName;
+
+    function save() {
+        vm.isSaving = true;
+        var data = angular.toJson({"appName": vm.appName, "monitoredApp": vm.entity});
+        console.log(data);
+        AppConfigEditService.save(data);
+        $uibModalInstance.dismiss('cancel');
+    }
+
+    function cancel() {
+        $uibModalInstance.dismiss('cancel');
     }
 }
 
