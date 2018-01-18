@@ -2,12 +2,14 @@ package org.infinity.passport.service.impl;
 
 import org.infinity.passport.domain.MonitoredApp;
 import org.infinity.passport.domain.Node;
+import org.infinity.passport.service.MailService;
 import org.infinity.passport.service.MonitoredAppService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,10 +24,14 @@ public class MonitoredAppServiceImpl implements MonitoredAppService {
 
     private final RestTemplate restTemplate;
 
+    private final MailService mailService;
+
     @Autowired
-    public MonitoredAppServiceImpl(MongoTemplate mongoTemplate, RestTemplate restTemplate) {
+    public MonitoredAppServiceImpl(MongoTemplate mongoTemplate, RestTemplate restTemplate,
+                                   MailService mailService) {
         this.mongoTemplate = mongoTemplate;
         this.restTemplate = restTemplate;
+        this.mailService = mailService;
     }
 
     @Override
@@ -66,5 +72,34 @@ public class MonitoredAppServiceImpl implements MonitoredAppService {
         ResponseEntity<String> entity = restTemplate.getForEntity("http://" + node.getServerAddress() + ":"
                 + node.getPort() + node.getHealthContextPath(), String.class);
         return entity.getBody();
+    }
+
+    @Scheduled(cron = "*/60 * * * * *")
+    public void sendMailIfNodeDisable() {
+        List<MonitoredApp> apps = mongoTemplate.findAll(MonitoredApp.class);
+        apps.forEach(e -> {
+            AtomicInteger integer = new AtomicInteger(0);
+            StringBuilder msg = new StringBuilder("节点：");
+            List<Node> nodes = e.getNodes();
+            nodes.forEach(o -> {
+                String nodeStatus;
+                try {
+                    nodeStatus = getNodeStatus(o);
+                    if (!nodeStatus.equalsIgnoreCase("\"status\":\"UP\"")) {
+                        integer.getAndIncrement();
+                        msg.append(o.getServerAddress()).append(',');
+                    }
+                } catch (Exception e1) {
+                    LOGGER.warn(e1.getMessage());
+                    integer.getAndIncrement();
+                }
+            });
+            if (integer.get() > 0) {
+                String content = msg.substring(0, msg.length() - 1).concat("不可用");
+                mailService.sendEmail(e.getResponsiblePerson().getEmail(), "监控消息",
+                        content, false, false);
+                LOGGER.warn(content);
+            }
+        });
     }
 }

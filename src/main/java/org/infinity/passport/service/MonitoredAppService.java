@@ -8,4 +8,6 @@ public interface MonitoredAppService {
     List<MonitoredApp> findAll();
 
     List<MonitoredApp> findAllWithoutQuest();
+
+    void sendMailIfNodeDisable();
 }

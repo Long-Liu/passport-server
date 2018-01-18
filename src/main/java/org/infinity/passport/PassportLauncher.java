@@ -26,10 +26,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.util.Assert;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+@EnableScheduling
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })
 public class PassportLauncher extends WebMvcConfigurerAdapter {
