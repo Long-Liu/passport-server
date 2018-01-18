@@ -11,18 +11,29 @@
         </div>
         <div class="form-group">
             <label class="control-label">负责人邮箱</label>
-            <input type="text" class="form-control" ng-model="vm.entity.responsiblePerson.email" value="{{vm.entity.responsiblePerson.email}}">
+            <input type="text" class="form-control" ng-model="vm.entity.responsiblePerson.email"
+                   value="{{vm.entity.responsiblePerson.email}}">
         </div>
         <div class="form-group">
             <label class="control-label">节点URL</label>
+            <button class="btn btn-info btn-circle" type="button" ng-click="vm.addNode()">
+                <i class="fa fa-plus"></i>
+            </button>
             <div class="row" ng-repeat="v in vm.entity.nodes track by $index">
                 <div class="col-md-4"><input ng-model="vm.entity.nodes[$index].serverAddress"
-                                             type="text" placeholder=".col-md-2" class="form-control" value="{{v.serverAddress}}"></div>
+                                             type="text" placeholder="节点服务器地址" class="form-control"
+                                             value="{{v.serverAddress}}"></div>
                 <div class="col-md-3"><input ng-model="vm.entity.nodes[$index].port"
-                                             type="text" placeholder=".col-md-3" class="form-control" value="{{v.port}}"></div>
+                                             type="text" placeholder="节点服务器端口" class="form-control"
+                                             value="{{v.port}}"></div>
                 <div class="col-md-4"><input ng-model="vm.entity.nodes[$index].healthContextPath"
-                                             type="text" placeholder=".col-md-4" class="form-control" value="{{v.healthContextPath}}"></div>
+                                             type="text" placeholder="节点服务器健康路径" class="form-control"
+                                             value="{{v.healthContextPath}}"></div>
+                <button class="btn btn-warning btn-circle" type="button" ng-click="vm.deleteNode($index)">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
+
         </div>
     </div>
     <div class="modal-footer">

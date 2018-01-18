@@ -619,15 +619,15 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
     }
 };
 
-function AppConfigController($state, AlertUtils,PAGINATION_CONSTANTS, ParseLinksUtils, pagingParams, AppConfigService, AppConfigTestService) {
+function AppConfigController($state, AlertUtils, PAGINATION_CONSTANTS, ParseLinksUtils, pagingParams, AppConfigService, AppConfigTestService) {
     var vm = this;
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.mode = $state.current.data.mode;
     vm.isSaving = false;
     vm.entity = [];
-    vm.page=1;
-    vm.itemsPerPage=PAGINATION_CONSTANTS.itemsPerPage;
+    vm.page = 1;
+    vm.itemsPerPage = PAGINATION_CONSTANTS.itemsPerPage;
     vm.predicate = pagingParams.predicate;
     vm.reverse = pagingParams.ascending;
     vm.findAll = findAll;
@@ -710,9 +710,12 @@ function AppConfigEditController($state, $uibModalInstance, entity, AppConfigEdi
     vm.mode = $state.current.data.mode;
     vm.entity = entity;
     vm.isSaving = false;
-    vm.cancel = cancel;
-    vm.save = save;
     vm.appName = entity.appName;
+    vm.cancel = cancel;
+    vm.nodes = [];
+    vm.save = save;
+    vm.deleteNode = deleteNode;
+    vm.addNode = addNode;
 
     function save() {
         vm.isSaving = true;
@@ -723,6 +726,20 @@ function AppConfigEditController($state, $uibModalInstance, entity, AppConfigEdi
 
     function cancel() {
         $uibModalInstance.dismiss('cancel');
+    }
+
+    function deleteNode(index) {
+        vm.entity.nodes[index] = null;
+        angular.forEach(vm.entity.nodes, function (v) {
+            if (v !== null) {
+                vm.nodes.push(v);
+            }
+        });
+        vm.entity.nodes = vm.nodes;
+    }
+
+    function addNode() {
+        vm.entity.nodes.length ++;
     }
 }
 
