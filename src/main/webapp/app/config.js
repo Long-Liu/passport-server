@@ -731,7 +731,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             url: '/view/{appName}',
             views: {
                 'content@': {
-                    templateUrl: 'app/views/admin/app/appConfig-details.html',
+                    templateUrl: 'app/views/admin/app/app-config-details.html',
                     controller: 'AppConfigViewController',
                     controllerAs: 'vm'
                 }

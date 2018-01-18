@@ -619,14 +619,19 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
     }
 };
 
-function AppConfigController($state, AlertUtils, ParseLinksUtils, pagingParams, AppConfigService, AppConfigTestService) {
+function AppConfigController($state, AlertUtils,PAGINATION_CONSTANTS, ParseLinksUtils, pagingParams, AppConfigService, AppConfigTestService) {
     var vm = this;
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.mode = $state.current.data.mode;
     vm.isSaving = false;
     vm.entity = [];
+    vm.page=1;
+    vm.itemsPerPage=PAGINATION_CONSTANTS.itemsPerPage;
+    vm.predicate = pagingParams.predicate;
+    vm.reverse = pagingParams.ascending;
     vm.findAll = findAll;
+    vm.links = null;
     vm.findByName = findByName;
     vm.findAll();
 
@@ -643,13 +648,29 @@ function AppConfigController($state, AlertUtils, ParseLinksUtils, pagingParams, 
     }
 
     function findAll() {
-        AppConfigService.get({}, function (result, header) {
+        AppConfigService.get({
+            page: pagingParams.page - 1,
+            size: vm.itemsPerPage,
+            sort: sort()
+        }, function (result, headers) {
+            vm.links = ParseLinksUtils.parse(headers('link'));
+            vm.totalItems = headers('X-Total-Count');
+            vm.page = pagingParams.page;
             vm.entity = result;
         });
     }
 
     function findByName(appName) {
         vm.entity = AppConfigService.findByName(appName);
+    }
+
+    function sort() {
+        var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
+        if (vm.predicate !== 'appName') {
+            // default sort column
+            result.push('appName,asc');
+        }
+        return result;
     }
 }
 

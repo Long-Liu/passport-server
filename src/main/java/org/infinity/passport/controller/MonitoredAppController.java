@@ -4,14 +4,22 @@ import org.apache.commons.collections.MapUtils;
 import org.infinity.passport.domain.MonitoredApp;
 import org.infinity.passport.domain.Node;
 import org.infinity.passport.domain.ResponsiblePerson;
+import org.infinity.passport.repository.MonitoredAppRepository;
 import org.infinity.passport.service.MonitoredAppService;
+import org.infinity.passport.utils.PaginationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.util.*;
 
 @RestController
@@ -21,11 +29,15 @@ public class MonitoredAppController {
 
     private final MongoTemplate mongoTemplate;
 
+    private final MonitoredAppRepository monitoredAppRepository;
+
     @Autowired
     public MonitoredAppController(MonitoredAppService monitoredAppService,
-                                  MongoTemplate mongoTemplate) {
+                                  MongoTemplate mongoTemplate,
+                                  MonitoredAppRepository monitoredAppRepository) {
         this.monitoredAppService = monitoredAppService;
         this.mongoTemplate = mongoTemplate;
+        this.monitoredAppRepository = monitoredAppRepository;
     }
 
     @GetMapping("api/monitoredApps")
@@ -34,10 +46,10 @@ public class MonitoredAppController {
     }
 
     @GetMapping("api/appConfig")
-    public List<MonitoredApp> loadApps() {
-        List<MonitoredApp> all = mongoTemplate.findAll(MonitoredApp.class);
-        all.forEach(System.out::println);
-        return mongoTemplate.findAll(MonitoredApp.class);
+    public ResponseEntity<List<MonitoredApp>> loadApps(Pageable pageable) throws URISyntaxException {
+        Page<MonitoredApp> monitoredAppPage = monitoredAppRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(monitoredAppPage, "api/appConfig");
+        return new ResponseEntity<>(monitoredAppPage.getContent(), headers, HttpStatus.OK);
     }
 
     @GetMapping("api/appConfig/{appName}")
