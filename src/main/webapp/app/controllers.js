@@ -658,16 +658,23 @@ function AppConfigViewController($state, entity) {
 
 }
 
-function AppMonitorController($state, AppMonitorService) {
+function AppMonitorController($state,$timeout,$interval,$scope, AppMonitorService) {
     var vm = this;
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.mode = $state.current.data.mode;
     vm.entity = AppMonitorService.findAll();
     vm.isSaving = false;
-    vm.findAll = function findAll() {
+    vm.findAll = findAll;
+
+    function findAll() {
         vm.entity = AppMonitorService.findAll();
     }
+
+    $interval(function () {
+        findAll();
+    }, 10000);
+
 }
 
 function AppConfigEditController($state, $uibModalInstance, entity, AppConfigEditService) {

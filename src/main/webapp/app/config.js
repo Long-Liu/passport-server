@@ -646,7 +646,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     squash: true
                 },
                 sort: {
-                    value: 'name,asc',
+                    value: 'appName,asc',
                     squash: true
                 }
             },
