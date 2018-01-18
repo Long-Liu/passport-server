@@ -619,7 +619,7 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
     }
 };
 
-function AppConfigController($state, ParseLinksUtils, pagingParams, AppConfigService,AppConfigTestService) {
+function AppConfigController($state, AlertUtils, ParseLinksUtils, pagingParams, AppConfigService, AppConfigTestService) {
     var vm = this;
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
@@ -631,10 +631,15 @@ function AppConfigController($state, ParseLinksUtils, pagingParams, AppConfigSer
     vm.findAll();
 
 
-    vm.removeOne=removeOne;
+    vm.removeOne = removeOne;
 
     function removeOne(appName) {
-        AppConfigTestService.removeOne(appName);
+        AlertUtils.createDeleteConfirmation('你确定要删除应用名称为' + appName + '的数据吗？', function (isConfirm) {
+            if (isConfirm) {
+                AppConfigTestService.removeOne(appName);
+                vm.findAll();
+            }
+        });
     }
 
     function findAll() {
@@ -658,7 +663,7 @@ function AppConfigViewController($state, entity) {
 
 }
 
-function AppMonitorController($state,$timeout,$interval,$scope, AppMonitorService) {
+function AppMonitorController($state, $timeout, $interval, $scope, AppMonitorService) {
     var vm = this;
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
@@ -700,7 +705,7 @@ function AppConfigEditController($state, $uibModalInstance, entity, AppConfigEdi
     }
 }
 
-function AppConfigCreateController($state, $uibModalInstance, AppConfigCreateService,entity) {
+function AppConfigCreateController($state, $uibModalInstance, AppConfigCreateService, entity) {
     var vm = this;
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
