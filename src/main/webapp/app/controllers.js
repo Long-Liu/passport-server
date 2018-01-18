@@ -673,7 +673,7 @@ function AppMonitorController($state,$timeout,$interval,$scope, AppMonitorServic
 
     $interval(function () {
         findAll();
-    }, 10000);
+    }, 60000);
 
 }
 
