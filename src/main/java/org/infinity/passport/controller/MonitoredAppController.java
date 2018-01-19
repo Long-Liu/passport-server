@@ -66,6 +66,7 @@ public class MonitoredAppController {
             if (Objects.nonNull(app)) {
                 mongoTemplate.remove(query, MonitoredApp.class);
                 mongoTemplate.insert(map.get("monitoredApp"), "MonitoredApp");
+                monitoredAppService.sendMailIfNodeDisable();
             }
         }
     }
