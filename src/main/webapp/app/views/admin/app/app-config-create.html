@@ -15,13 +15,22 @@
         </div>
         <div class="form-group">
             <label class="control-label">节点URL</label>
-            <div class="row" ng-repeat="(k,v) in [0,1,2,3,4] track by $index">
-                <div class="col-md-4"><input ng-model="vm.entity.nodes[k].serverAddress"
-                                             type="text" placeholder="节点地址{{k}}" class="form-control" ></div>
-                <div class="col-md-3"><input ng-model="vm.entity.nodes[k].port"
-                                             type="text" placeholder="节点端口{{k}}" class="form-control" ></div>
-                <div class="col-md-4"><input ng-model="vm.entity.nodes[k].healthContextPath"
-                                             type="text" placeholder="健康检测路径{{k}}" class="form-control" ></div>
+            <button class="btn btn-info btn-circle" type="button" ng-click="vm.addNode()">
+                <i class="fa fa-plus"></i>
+            </button>
+            <div class="row" ng-repeat="v in vm.entity.nodes track by $index">
+                <div class="col-md-4"><input ng-model="vm.entity.nodes[$index].serverAddress"
+                                             type="text" placeholder="节点服务器地址" class="form-control"
+                                             value="{{v.serverAddress}}"></div>
+                <div class="col-md-3"><input ng-model="vm.entity.nodes[$index].port"
+                                             type="text" placeholder="节点服务器端口" class="form-control"
+                                             value="{{v.port}}"></div>
+                <div class="col-md-4"><input ng-model="vm.entity.nodes[$index].healthContextPath"
+                                             type="text" placeholder="节点服务器健康路径" class="form-control"
+                                             value="{{v.healthContextPath}}"></div>
+                <button class="btn btn-warning btn-circle" type="button" ng-click="vm.deleteNode($index)">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
         </div>
     </div>

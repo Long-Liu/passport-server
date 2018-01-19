@@ -729,18 +729,26 @@ function AppConfigEditController($state, $uibModalInstance, entity, AppConfigEdi
     }
 
     function deleteNode(index) {
-        vm.entity.nodes[index] = null;
-        angular.forEach(vm.entity.nodes, function (v) {
-            if (v !== null) {
-                vm.nodes.push(v);
-            }
-        });
-        vm.entity.nodes = vm.nodes;
+        vm.entity.nodes.remove(vm.entity.nodes[index])
     }
 
     function addNode() {
         vm.entity.nodes.length ++;
     }
+
+    Array.prototype.indexOf = function(val) {
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] === val) return i;
+        }
+        return -1;
+    };
+
+    Array.prototype.remove = function(val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+            this.splice(index, 1);
+        }
+    };
 }
 
 function AppConfigCreateController($state, $uibModalInstance, AppConfigCreateService, entity) {
@@ -750,6 +758,9 @@ function AppConfigCreateController($state, $uibModalInstance, AppConfigCreateSer
     vm.mode = $state.current.data.mode;
     vm.entity = entity;
     vm.isSaving = false;
+    vm.entity.nodes=[];
+    vm.deleteNode=deleteNode;
+    vm.addNode=addNode;
     vm.cancel = cancel;
     vm.insertOne = insertOne;
 
@@ -763,6 +774,28 @@ function AppConfigCreateController($state, $uibModalInstance, AppConfigCreateSer
     function cancel() {
         $uibModalInstance.dismiss('cancel');
     }
+
+    function deleteNode(index) {
+        vm.entity.nodes.remove(vm.entity.nodes[index])
+    }
+
+    function addNode() {
+        vm.entity.nodes.length ++;
+    }
+
+    Array.prototype.indexOf = function(val) {
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] === val) return i;
+        }
+        return -1;
+    };
+
+    Array.prototype.remove = function(val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+            this.splice(index, 1);
+        }
+    };
 }
 
 /**
