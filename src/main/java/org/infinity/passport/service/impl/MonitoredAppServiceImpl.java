@@ -74,7 +74,7 @@ public class MonitoredAppServiceImpl implements MonitoredAppService {
         return entity.getBody();
     }
 
-//    @Scheduled(cron = "*/60 * * * * *")
+    @Scheduled(cron = "*/60 * * * * *")
     public void sendMailIfNodeDisable() {
         List<MonitoredApp> apps = mongoTemplate.findAll(MonitoredApp.class);
         apps.forEach(e -> {
