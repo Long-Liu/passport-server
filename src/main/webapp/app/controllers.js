@@ -691,16 +691,19 @@ function AppMonitorController($state, $timeout, $interval, $scope, AppMonitorSer
     vm.mode = $state.current.data.mode;
     vm.entity = AppMonitorService.findAll();
     vm.isSaving = false;
+    vm.timer = $interval(function () {
+        findAll();
+    }, 60000);
     vm.findAll = findAll;
 
     function findAll() {
         vm.entity = AppMonitorService.findAll();
     }
 
-    $interval(function () {
-        findAll();
-    }, 60000);
-
+    //移除timer
+    $scope.$on('destroy', function () {
+        $interval.cancel(vm.timer);
+    })
 }
 
 function AppConfigEditController($state, $uibModalInstance, entity, AppConfigEditService) {
@@ -733,17 +736,17 @@ function AppConfigEditController($state, $uibModalInstance, entity, AppConfigEdi
     }
 
     function addNode() {
-        vm.entity.nodes.length ++;
+        vm.entity.nodes.length++;
     }
 
-    Array.prototype.indexOf = function(val) {
+    Array.prototype.indexOf = function (val) {
         for (var i = 0; i < this.length; i++) {
             if (this[i] === val) return i;
         }
         return -1;
     };
 
-    Array.prototype.remove = function(val) {
+    Array.prototype.remove = function (val) {
         var index = this.indexOf(val);
         if (index > -1) {
             this.splice(index, 1);
@@ -758,9 +761,9 @@ function AppConfigCreateController($state, $uibModalInstance, AppConfigCreateSer
     vm.mode = $state.current.data.mode;
     vm.entity = entity;
     vm.isSaving = false;
-    vm.entity.nodes=[];
-    vm.deleteNode=deleteNode;
-    vm.addNode=addNode;
+    vm.entity.nodes = [];
+    vm.deleteNode = deleteNode;
+    vm.addNode = addNode;
     vm.cancel = cancel;
     vm.insertOne = insertOne;
 
@@ -780,17 +783,17 @@ function AppConfigCreateController($state, $uibModalInstance, AppConfigCreateSer
     }
 
     function addNode() {
-        vm.entity.nodes.length ++;
+        vm.entity.nodes.length++;
     }
 
-    Array.prototype.indexOf = function(val) {
+    Array.prototype.indexOf = function (val) {
         for (var i = 0; i < this.length; i++) {
             if (this[i] === val) return i;
         }
         return -1;
     };
 
-    Array.prototype.remove = function(val) {
+    Array.prototype.remove = function (val) {
         var index = this.indexOf(val);
         if (index > -1) {
             this.splice(index, 1);
