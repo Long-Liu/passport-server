@@ -74,7 +74,7 @@ public class MonitoredAppServiceImpl implements MonitoredAppService {
         return entity.getBody();
     }
 
-    @Scheduled(cron = "*/60 * * * * *")
+    @Scheduled(cron = "*/300 * * * * *")
     public void sendMailIfNodeDisable() {
         List<MonitoredApp> apps = mongoTemplate.findAll(MonitoredApp.class);
         apps.forEach(e -> {
@@ -82,10 +82,9 @@ public class MonitoredAppServiceImpl implements MonitoredAppService {
             StringBuilder msg = new StringBuilder("节点：");
             List<Node> nodes = e.getNodes();
             nodes.forEach(o -> {
-                String nodeStatus;
                 try {
-                    nodeStatus = getNodeStatus(o);
-                    if (!nodeStatus.equalsIgnoreCase("\"status\":\"UP\"")) {
+                    String nodeStatus = getNodeStatus(o);
+                    if (!nodeStatus.substring(1, 14).equals("\"status\":\"UP\"")) {
                         integer.getAndIncrement();
                         msg.append(o.getServerAddress()).append(',');
                     }

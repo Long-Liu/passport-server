@@ -18,8 +18,8 @@ spring:
             enabled: false # we use gulp + BrowserSync for livereload
     mail: # specific mail property, used by MailProperties
         host: smtp.exmail.qq.com
-        username: admin@pm6422.org
-        password: 35H-UHR-9dH-8G9-FG3
+        username: jushang_yuyicloud@360iii.com
+        password: W%EfzVu1y1TG0*Bz
     messages:
         cache-seconds: 1
     thymeleaf:
