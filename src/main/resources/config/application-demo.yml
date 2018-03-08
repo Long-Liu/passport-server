@@ -17,17 +17,14 @@ spring:
         livereload:
             enabled: false # we use gulp + BrowserSync for livereload
     mail: # specific mail property, used by MailProperties
-        host: smtp.exmail.qq.com
-        username: jushang_yuyicloud@360iii.com
-        password: W%EfzVu1y1TG0*Bz
+        host: smtp.qq.com
+        username: 744559622@qq.com
+        password: cuonorckkgjnbbjb
+        port: 465
     messages:
         cache-seconds: 1
     thymeleaf:
         cache: false
-    data:
-        mongodb:
-            database: passportserver
-            uri: mongodb://passportserver:passportserverpwd@122.144.200.8:27017/passportserver?maxPoolSize=1000&minPoolSize=10&connectTimeoutMS=30000
 endpoints:
     shutdown:
         enabled: true
