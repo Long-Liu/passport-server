@@ -24,10 +24,6 @@ spring:
         cache-seconds: 1
     thymeleaf:
         cache: false
-    data:
-        mongodb:
-            database: passportserver
-            uri: mongodb://passportserver:passportserverpwd@122.144.200.8:27017/passportserver?maxPoolSize=1000&minPoolSize=10&connectTimeoutMS=30000
 endpoints:
     shutdown:
         enabled: true
