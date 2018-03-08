@@ -38,7 +38,7 @@ spring:
         # The commented value for `active` can be replaced with valid spring profiles to load.
         # Otherwise, it will be filled in by maven when building the WAR file
         # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
-        active: test
+        active: demo
     messages:
         # Do not add the prefix classpath:, please refer to MessageSourceAutoConfiguration.getResources(ClassLoader classLoader, String name)
         # TODO: basename only support the first massage resource for now.
@@ -58,7 +58,7 @@ spring:
 server: 
     context-path: /uaa
     # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
-    port: #app.server.port#
+    port: 9020
     session:
         cookie:
             http-only: true
