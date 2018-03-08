@@ -74,16 +74,16 @@ public class MongoConfiguration {
         return new MongoTemplate(mongoDbFactory, mappingMongoConverter());
     }
 
-//    @Bean
-//    public Mongobee mongobee(MongoClient mongoClient, MongoTemplate mongoTemplate) {
-//        LOGGER.debug("Configuring Mongobee");
-//        Mongobee mongobee = new Mongobee(mongoClient);
-//        // For embedded mongo
-//        mongobee.setDbName(mongoClient.listDatabaseNames().first());
-//        mongobee.setMongoTemplate(mongoTemplate);
-//        mongobee.setChangeLogsScanPackage(DatabaseInitialSetup.class.getPackage().getName());
-//        mongobee.setEnabled(true);
-//        LOGGER.debug("Configured Mongobee");
-//        return mongobee;
-//    }
+    @Bean
+    public Mongobee mongobee(MongoClient mongoClient, MongoTemplate mongoTemplate) {
+        LOGGER.debug("Configuring Mongobee");
+        Mongobee mongobee = new Mongobee(mongoClient);
+        // For embedded mongo
+        mongobee.setDbName(mongoClient.listDatabaseNames().first());
+        mongobee.setMongoTemplate(mongoTemplate);
+        mongobee.setChangeLogsScanPackage(DatabaseInitialSetup.class.getPackage().getName());
+        mongobee.setEnabled(true);
+        LOGGER.debug("Configured Mongobee");
+        return mongobee;
+    }
 }
